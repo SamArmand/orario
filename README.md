@@ -1,3 +1,3 @@
-# Orario, an schedule generator.
+# Orario, a schedule generator.
 
 This is homework.
