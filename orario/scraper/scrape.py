@@ -10,13 +10,29 @@ def main():
         course_title = course_number.next_sibling
         course_credits = course_title.next_sibling
         for row in anchor.parent.next_siblings:
-            pass
+            try:
+                if row('td', style='background-color:Maroon;'):
+                    break
+                if 'Prerequisite:' in row.contents[2].text:
+                    handle_prereqs(row)
+            except IndexError:
+                pass
+            except AttributeError:
+                pass
+            except TypeError:
+                pass
 
 def handle_prereqs(row):
-    """ Returns a list of prereqs in the form
-        of course numbers.
+    """ Returns a dict of prereqs in the form
+        of course numbers . Format:
+        
+        {
+            'prereqs': ('COMP 232', ...),
+            'coreqs': ('SOEN 331', ...),
+            'other': 'notes, etc'
+        }
     """
-    pass
+    print row.contents[3].text
 
 def handle_note(row):
     """ Returns a string containing the special
