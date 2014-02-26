@@ -20,9 +20,11 @@ class TimeSlot(models.Model):
     day = models.CharField(max_length=1, choices=DAYS_OF_THE_WEEK)
     
     def conflicts_with(self, slot):
-        if ((self.day == slot.day) and ((self.begin_time < slot.end_time) or (slot.begin_time < self.end_time))):
-            return true
-        return false
+        if ((self.day == slot.day)
+                and ((self.begin_time < slot.end_time) 
+                     or (slot.begin_time < self.end_time))):
+            return True
+        return False
     
     class Meta:
         abstract = True

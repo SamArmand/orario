@@ -1,0 +1,349 @@
+BODY
+{
+    FONT-FAMILY: verdana, geneva, arial, helvetica, sans-serif;
+    FONT-SIZE: 11px;
+    BACKGROUND-COLOR: #ffffff;
+    margin: 5px;
+}
+DIV.tmargin
+{
+    MARGIN-TOP: 50px
+}
+SPAN.indent
+{
+    MARGIN-LEFT: 35px
+}
+P
+{
+    FONT-SIZE: 11px;
+    MARGIN-LEFT: 35px;
+    LINE-HEIGHT: 150%;
+    FONT-FAMILY: verdana, geneva, arial, helvetica, sans-serif
+}
+P.cree
+{
+    FONT-WEIGHT: bold;
+    FONT-SIZE: 16px;
+    MARGIN-LEFT: 35px;
+    LINE-HEIGHT: 150%;
+    FONT-FAMILY: verdana, geneva, arial, helvetica, sans-serif
+}
+.foot
+{
+    FONT-SIZE: 11px;
+    MARGIN-LEFT: 35px;
+    FONT-FAMILY: verdana, geneva, arial, helvetica, sans-serif
+}
+TABLE.form1
+{
+    MARGIN-LEFT: 10px
+}
+TABLE.form
+{
+    MARGIN-LEFT: 35px
+}
+TABLE.form2
+{
+    MARGIN-LEFT: 90px
+}
+TR.heading
+{
+    BACKGROUND-COLOR: #E8E8E8;
+}
+tr.depthead {
+	background-color: #7483CC;
+
+}
+
+TD
+{
+    FONT-SIZE: 11px;
+    FONT-FAMILY: Verdana, Helvetica, Arial, geneva, sans-serif;
+    color: #000000;
+}
+TD.titles
+{
+    FONT-WEIGHT: bold;
+    FONT-SIZE: 10px;
+    COLOR: #000000;
+    FONT-FAMILY: Verdana, Helvetica, Arial;
+    TEXT-ALIGN: center
+}
+TD.overall
+{
+    BACKGROUND-COLOR: #5885b8
+}
+TD.bullet
+{
+    BACKGROUND-COLOR: #333333
+}
+td.department {
+	font-family: Verdana, Helvetica, Arial;
+	font-weight: bold;
+	font-size: 12px;
+	text-align: center;
+	color: #000000;
+}
+
+td.head1 {
+	background-color: #333333;
+	font-family: Verdana, Helvetica, Arial, sans-serif;
+	font-weight: bold;
+	font-size: 12px;
+	text-align: left;
+	color: #ffffff;
+}
+
+td.head2 {
+	background-color: #003366;
+	font-family: Verdana, Helvetica, Arial, sans-serif;
+	font-weight: bold;
+	font-size: 12px;
+	text-align: left;
+	color: #ffffff;
+}
+td.figs {
+	font-family: Verdana, Helvetica, Arial;
+	font-weight: bold;
+	font-size: 10px;
+}
+
+HR
+{
+    MARGIN-LEFT: 35px;
+    COLOR: #cccccc;
+    FONT-FAMILY: verdana, sans-serif;
+    HEIGHT: 1px;
+    BACKGROUND-COLOR: transparent
+}
+.small
+{
+    FONT-SIZE: 10px;
+    FONT-FAMILY: verdana, geneva, arial, helvetica, sans-serif
+}
+DIV.content
+{
+    PADDING-RIGHT: 10px;
+    PADDING-LEFT: 20px;
+    FONT-SIZE: 11px;
+    MARGIN-BOTTOM: 20px;
+    PADDING-BOTTOM: 10px;
+    PADDING-TOP: 1px;
+    FONT-FAMILY: verdana, geneva, arial, helvetica, sans-serif
+}
+.fine
+{
+    FONT-SIZE: 11px;
+    COLOR: #666666;
+    FONT-FAMILY: verdana, geneva, arial, helvetica, sans-serif;
+}
+H1
+{
+    BORDER-RIGHT: 0px;
+    BORDER-TOP: 0px;
+    MARGIN-TOP: -5px;
+    FONT-WEIGHT: bold;
+    FONT-SIZE: 18px;
+    MARGIN-BOTTOM: -10px;
+    MARGIN-LEFT: 35px;
+    BORDER-LEFT: 25px;
+    COLOR: #333333;
+    LINE-HEIGHT: 100%;
+    PADDING-TOP: 10px;
+    BORDER-BOTTOM: 0px;
+    FONT-FAMILY: arial, helvetica, verdana, geneva, sans-serif;
+    BACKGROUND-COLOR: #ffffff
+}
+H2
+{
+    FONT-SIZE: 14px;
+    MARGIN-LEFT: 35px;
+    FONT-FAMILY: verdana, geneva, arial, helvetica, sans-serif
+}
+
+P.leftnav
+{
+    PADDING-RIGHT: 3px;
+    PADDING-LEFT: 3px;
+    FONT-WEIGHT: bold;
+    FONT-SIZE: 10px;
+    PADDING-BOTTOM: 3px;
+    COLOR: #ffffff;
+    PADDING-TOP: 3px;
+    FONT-FAMILY: verdana, geneva, arial, helvetica, sans-serif;
+    BACKGROUND-COLOR: transparent;
+    TEXT-DECORATION: none
+}
+A.leftnavoff
+{
+    FONT-WEIGHT: bold;
+    COLOR: #ffffff;
+    TEXT-DECORATION: none
+}
+A.leftnavoff:link
+{
+    COLOR: #ffffff;
+    TEXT-DECORATION: none
+}
+A.leftnavoff:active
+{
+    COLOR: #ffffff;
+    TEXT-DECORATION: none
+}
+A.leftnavoff:visited
+{
+    COLOR: #ffffff;
+    TEXT-DECORATION: none
+}
+A.leftnavoff:hover
+{
+    TEXT-DECORATION: none
+}
+A.leftnav:link
+{
+    FONT-WEIGHT: bold;
+    COLOR: #ffffff;
+    TEXT-DECORATION: none
+}
+A.leftnav:active
+{
+    FONT-WEIGHT: bold;
+    COLOR: #ffffff;
+    TEXT-DECORATION: none
+}
+A.leftnav:visited
+{
+    FONT-WEIGHT: bold;
+    COLOR: #ffffff;
+    TEXT-DECORATION: none
+}
+A.leftnav:hover
+{
+    FONT-WEIGHT: bold;
+    COLOR: #ffffff;
+    TEXT-DECORATION: none
+}
+A.leftnavon:link
+{
+    COLOR: #ffffff;
+    TEXT-DECORATION: none
+}
+A.leftnavon:active
+{
+    COLOR: #ffffff;
+    TEXT-DECORATION: none
+}
+A.leftnavon:visited
+{
+    COLOR: #ffffff;
+    TEXT-DECORATION: none
+}
+A.leftnavon:hover
+{
+    COLOR: #ffffff;
+    TEXT-DECORATION: none
+}
+A:link
+{
+    COLOR: #006699;
+    BACKGROUND-COLOR: transparent
+}
+A:visited
+{
+    COLOR: #666666;
+    BACKGROUND-COLOR: transparent
+}
+A:active
+{
+    COLOR: #666666;
+    BACKGROUND-COLOR: transparent
+}
+A:hover
+{
+    COLOR: #666666;
+    BACKGROUND-COLOR: transparent;
+    TEXT-DECORATION: none
+}
+SPAN.netfrench
+{
+    FONT-WEIGHT: bold;
+    COLOR: #ffffff
+}
+.TabletTitleStyle 
+{
+    FONT-WEIGHT: bold;
+    FONT-SIZE: 13px;
+    COLOR: Navy;
+    FONT-FAMILY: Verdana, Helvetica, Arial;
+}
+.Upper
+{
+    text-transform:uppercase;
+}
+div.hr 
+{
+    MARGIN-LEFT: 1px;
+    COLOR: Black;
+    FONT-FAMILY: verdana, sans-serif;
+    HEIGHT: 3px;
+    BACKGROUND-COLOR:  Black;
+}
+div.hr hr {
+  display: none;
+}  
+div#datePicker
+{          
+            position:absolute;            
+            background-color:white;
+}  
+p.note
+{
+	color:Maroon;
+	font-weight:bold;
+		
+		
+}
+div.TreeControl  td { vertical-align:top;  font-family :Arial;  }
+div.GridViewSpace  td { white-space:pre-wrap;  }
+.gvLCS006_td  {  padding-left:20px;}
+#bswoosh
+{	
+    background:  url(../fcms/images/bswoosh.gif) no-repeat center;
+}
+p.lcs_lable
+{	
+	font-weight:bold;
+	font-size :x-large   ;	
+	
+}
+
+
+.ModalDialogBackground
+{
+	background-color:Gray;
+	filter:alpha(opacity=70);
+	opacity:0.7;
+}
+
+.ModalDialog
+{
+	margin: 0px;
+	padding: 0px;
+	background-color: White;
+	border: solid 1px Black;
+}
+
+.DialogTitle
+{
+	color: White;
+	background-color: Blue;
+	padding: 1px 20px 1px 20px;
+	text-align: justify;
+	padding-left: 20px;
+}
+
+.PopUpPanel
+{
+    max-height: 500px;
+    height: auto;
+}
