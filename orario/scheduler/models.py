@@ -13,26 +13,36 @@ DAYS_OF_THE_WEEK = (
         ('S', _('saturday')),
 )
 
+# Types of timeslots in course
+COURSE_SLOT_TYPES = (
+        ('lec', _('lecture')),
+        ('tut', _('tutorial')),
+        ('lab', _('lab'))
+)
+
 class TimeSlot(models.Model):
     label = models.CharField(max_length=50)
     begin_time = models.TimeField()
     end_time = models.TimeField()
     day = models.CharField(max_length=1, choices=DAYS_OF_THE_WEEK)
-    
+
     def conflicts_with(self, slot):
         if ((self.day == slot.day)
-                and ((self.begin_time < slot.end_time) 
-                     or (slot.begin_time < self.end_time))):
+                and ((self.begin_time < slot.end_time)
+                    or (slot.begin_time < self.end_time))):
             return True
         return False
-    
+
     class Meta:
         abstract = True
 
 class BusySlot(TimeSlot):
     user = models.ForeignKey(User)
-    
+
 class Course(models.Model):
     number = models.CharField(max_length=10)
     title = models.CharField(max_length=255)
-    
+
+class CourseSlot(TimeSlot):
+    course = models.ForeignKey(Course)
+    type = models.CharField(max_length=1, choices=COURSE_SLOT_TYPES)
