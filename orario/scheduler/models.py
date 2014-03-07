@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext as _
+import string
 
 
 """GEORGE NOTES
@@ -19,42 +20,27 @@ from django.utils.translation import ugettext as _
 """
 
 # As used by Concordia's schedules
-DAYS_OF_THE_WEEK = (
-        ('D', _('sunday')),
-        ('M', _('monday')),
-        ('T', _('tuesday')),
-        ('W', _('wednesday')),
-        ('J', _('thursday')),
-        ('F', _('friday')),
-        ('S', _('saturday')),
-)
-
+MONDAY = 0b1
+TUESDAY = 0b10
+WEDNESDAY = 0b100
+THURSDAY = 0b1000
+FRIDAY = 0b10000
+SATURDAY = 0b100000
+SUNDAY = 0b1000000
 
 # Types of timeslots in course
 COURSE_SLOT_TYPES = (
-        ('lec', _('lecture')),
-        ('tut', _('tutorial')),
-        ('lab', _('lab'))
+    ('lec', _('lecture')),
+    ('tut', _('tutorial')),
+    ('lab', _('lab'))
 )
 
-# Program code to name dictionary
-PROGRAM = (
-        ('ELEC', _('Electrical Engineering')),
-        ('MECH', _('Mechanical Engineering')),
-        ('SOEN', _('Software Engineering')),
-        ('COEN', _('Computer Engineering')),
-        ('BLDG', _('Building Engineering')),
-        ('CIVI', _('Civil Engineering')),
-        ('COMP', _('Computer Science')),
-        ('INDU', _('Industrial Engineering')),
-        # Not sure if we should include ENCS, ENGR, etc.
-)
 
 class TimeSlot(models.Model):
     label = models.CharField(max_length=50)
     begin_time = models.TimeField()
     end_time = models.TimeField()
-    day = models.CharField(max_length=1, choices=DAYS_OF_THE_WEEK)
+    days = models.IntegerField()
 
     """
         [Django Metadata Options Class](https://docs.djangoproject.com/en/dev/topics/db/models/#meta-options)
@@ -68,15 +54,17 @@ class TimeSlot(models.Model):
         """ 
             @param slot: TimeSlot object
             @return: Boolean value, True if TimeField values intersect.
-            - Description: Compares self with parameter TimeSlot object. Checks if passed parameter occupies the same space as self.
+            - Description: Compares self with parameter TimeSlot object.
+                Checks if passed parameter occupies the same space as self.
             - Precondition(s): slot must be a valid TimeSlot object => isinstance(slot,TimeSlot)
             - Postcondition(s):none, (does not change state)
         """
-        if ((self.day == slot.day)  
+        if ((self.days & slot.days)  # Bitwise AND to check for conflicting days
                 and ((self.begin_time < slot.end_time) 
                      or (slot.begin_time < self.end_time))):
             return True
         return False
+
 
 class BusySlot(TimeSlot):
     """
@@ -86,29 +74,56 @@ class BusySlot(TimeSlot):
     """
     user = models.ForeignKey(User)
 
+
 class Course(models.Model):
     """
         Represents A Course, which is composed of one or many sections.
 
     """
-    number = models.CharField(max_length=10) # represented as ID in domain model
-    title = models.CharField(max_length=255) # represented as Name in domain model
-    
-    credits = models.DecimalField(max_digits=2, decimal_places=1) #  example: 3.5
+    number = models.CharField(max_length=10)  # represented as ID in domain model
+    title = models.CharField(max_length=255)  # represented as Name in domain model
+    credits = models.DecimalField(max_digits=2, decimal_places=1)  # example: 3.5
     prereqs = models.ManyToManyField("self", symmetrical=False)
 
-class CourseSlot(TimeSlot):
+
+class SectionSlot(TimeSlot):
     """
         Contains a Course Object. Has a type of lec, tut, or lab.
         Example: type:lec, code: 'AA', instructor: 'Aiman Hanna',
     """
-    course = models.ForeignKey(Course)
-    section_type = models.CharField(max_length=3, choices=COURSE_SLOT_TYPES) #lec/tut/lab
-    
-    section = models.Charfield(max_length=2) # "Lect AA" >> Just the AA part
-    instructor = models.CharField(max_length=255) # "Aiman Hanna"
-    room = models.CharField(max_length=255) # "SGW H-530"
+    section_code = models.CharField(max_length=2)  # "Lect AA" >> Just the AA part
+    instructor = models.CharField(max_length=255)  # "Aiman Hanna"
+    room = models.CharField(max_length=255)  # "SGW H-530"
 
+    class Meta:
+        abstract = True
+
+
+class LectureSlot(SectionSlot):
+    pass
+
+
+class TutorialSlot(SectionSlot):
+    pass
+
+
+class LabSlot(SectionSlot):
+    pass
+
+
+class Section(models.Model):
+    """
+
+    """
+    course = models.ForeignKey(Course)
+    lecture = models.ForeignKey(LectureSlot)
+    tutorial = models.ForeignKey(TutorialSlot, null=True, blank=True)
+    lab = models.ForeignKey(LabSlot, null=True, blank=True)
+
+    @property
+    def __unicode__(self):
+        # TODO Check if fails if tutorial == NULL or lab == NULL
+        return string.join([self.lecture.section_code, self.tutorial.section_code, self.lab.section_code])
 
 
 class Student(models.Model):
@@ -126,19 +141,25 @@ class CourseList(models.Model):
     """
 
     """
+
+
 class Schedule(models.Model):
     """
         Contains Timeslot objects.
     """
+
+
 class Program(models.Model):
     """
         A program can have one of many offered sequences.
     """
+
+
 class Sequence(CourseList):
     """
         A Collection of Courses ordered by semester. Based on Student(User)'s Program
 
     """
     user = models.ForeignKey(User)
-    program = models.CharField(max_length=4,choices=PROGRAM)
+    program = models.ForeignKey(Program)
     courses = models.ManyToManyField(Course)
