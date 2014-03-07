@@ -9,6 +9,13 @@ from django.utils.translation import ugettext as _
     -- Use docstrings under declaration
     -- TimeField():
         Time Objects
+
+    What's our input?
+        Student enters desired busy times
+        Student enters desired courses
+    TODOOOO
+        Implement __unicode__ methods for all classes
+
 """
 
 # As used by Concordia's schedules
@@ -103,6 +110,15 @@ class CourseSlot(TimeSlot):
     room = models.CharField(max_length=255) # "SGW H-530"
 
 
+
+class Student(models.Model):
+    # wat User is already defined in django.contrib.auth.models
+    # has program(program has a sequence), busytimes, courses_taken(record)
+    program = models.ForeignKey(Program)
+    # busy_times don't need to be defined here
+    courses_taken = models.ManyToManyField("record")
+
+
 #PLAN Make a class CourseList which is a bag of Course Objects.
 # Have Schedule, Sequence etc. extend CourseList and implement their own ordering.
 
@@ -110,13 +126,13 @@ class CourseList(models.Model):
     """
 
     """
-class Schedule(CourseList):
+class Schedule(models.Model):
     """
-
+        Contains Timeslot objects.
     """
 class Program(models.Model):
     """
-        
+        A program can have one of many offered sequences.
     """
 class Sequence(CourseList):
     """
