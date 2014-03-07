@@ -121,6 +121,9 @@ DocProject/Help/*.hhp
 DocProject/Help/Html2
 DocProject/Help/html
 
+# PyCharm
+.idea/
+
 # Click-Once directory
 publish/
 
