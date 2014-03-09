@@ -4,20 +4,19 @@ from django.utils.translation import ugettext as _
 import string
 
 
-"""GEORGE NOTES
-    delete this shizz
-    -- Add Pre/Post/Invariant Everywhere
-    -- Use docstrings under declaration
-    -- TimeField():
-        Time Objects
+# GEORGE NOTES
+#     delete this shizz
+#     -- Add Pre/Post/Invariant Everywhere
+#     -- Use docstrings under declaration
+#     -- TimeField():
+#         Time Objects
+#
+#     What's our input?
+#         Student enters desired busy times
+#         Student enters desired courses
+#     TODOOOO
+#         Implement __unicode__ methods for all classes
 
-    What's our input?
-        Student enters desired busy times
-        Student enters desired courses
-    TODOOOO
-        Implement __unicode__ methods for all classes
-
-"""
 
 # As used by Concordia's schedules
 MONDAY = 0b1
@@ -28,13 +27,6 @@ FRIDAY = 0b10000
 SATURDAY = 0b100000
 SUNDAY = 0b1000000
 
-# Types of timeslots in course
-COURSE_SLOT_TYPES = (
-    ('lec', _('lecture')),
-    ('tut', _('tutorial')),
-    ('lab', _('lab'))
-)
-
 
 class TimeSlot(models.Model):
     label = models.CharField(max_length=50)
@@ -42,12 +34,11 @@ class TimeSlot(models.Model):
     end_time = models.TimeField()
     days = models.IntegerField()
 
-    """
-        [Django Metadata Options Class](https://docs.djangoproject.com/en/dev/topics/db/models/#meta-options)
-        Modifies the outer class to configure the model for django. Used to make a class abstract
-
-    """
     class Meta:
+        """
+            [Django Metadata Options Class](https://docs.djangoproject.com/en/dev/topics/db/models/#meta-options)
+            Modifies the outer class to configure the model for django. Used to make a class abstract
+        """
         abstract = True
 
     def conflicts_with(self, slot):
@@ -129,12 +120,13 @@ class Section(models.Model):
 class Student(models.Model):
     # wat User is already defined in django.contrib.auth.models
     # has program(program has a sequence), busytimes, courses_taken(record)
-    program = models.ForeignKey(Program)
+    user = models.ForeignKey(User)
+    option = models.ForeignKey(Option)
     # busy_times don't need to be defined here
     courses_taken = models.ManyToManyField("record")
 
 
-#PLAN Make a class CourseList which is a bag of Course Objects.
+# PLAN Make a class CourseList which is a bag of Course Objects.
 # Have Schedule, Sequence etc. extend CourseList and implement their own ordering.
 
 class CourseList(models.Model):
@@ -145,14 +137,22 @@ class CourseList(models.Model):
 
 class Schedule(models.Model):
     """
-        Contains Timeslot objects.
+    Contains Timeslot objects.
     """
 
 
 class Program(models.Model):
     """
-        A program can have one of many offered sequences.
+    A program can have one of many offered sequences.
     """
+    name = models.CharField(max_length=255)
+
+
+class Option(models.Model):
+    """
+    An option carries a course sequence.
+    """
+    name = models.CharField(max_length=255)
 
 
 class Sequence(CourseList):
