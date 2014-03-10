@@ -1,8 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import User
-from django.utils.translation import ugettext as _
-import string
-
+from django.conf import settings
 
 # GEORGE NOTES
 #     delete this shizz
@@ -17,8 +14,8 @@ import string
 #     TODOOOO
 #         Implement __unicode__ methods for all classes
 
-
 # As used by Concordia's schedules
+
 MONDAY = 0b1
 TUESDAY = 0b10
 WEDNESDAY = 0b100
@@ -63,18 +60,7 @@ class BusySlot(TimeSlot):
         - Precondition(s):
         - Postcondition(s):
     """
-    user = models.ForeignKey(User)
-
-
-class Course(models.Model):
-    """
-        Represents A Course, which is composed of one or many sections.
-
-    """
-    number = models.CharField(max_length=10)  # represented as ID in domain model
-    title = models.CharField(max_length=255)  # represented as Name in domain model
-    credits = models.DecimalField(max_digits=2, decimal_places=1)  # example: 3.5
-    prereqs = models.ManyToManyField("self", symmetrical=False)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL)
 
 
 class SectionSlot(TimeSlot):
@@ -121,64 +107,7 @@ class LabSlot(SectionSlot):
     pass
 
 
-class Section(models.Model):
-    """
-
-    """
-    course = models.ForeignKey(Course)
-    lecture = models.ForeignKey(LectureSlot)
-    tutorial = models.ForeignKey(TutorialSlot, null=True, blank=True)
-    lab = models.ForeignKey(LabSlot, null=True, blank=True)
-
-    @property
-    def __unicode__(self):
-        # TODO Check if fails if tutorial == NULL or lab == NULL
-        return string.join([self.lecture.section_code, self.tutorial.section_code, self.lab.section_code])
-
-
-class Student(models.Model):
-    # wat User is already defined in django.contrib.auth.models
-    # has program(program has a sequence), busytimes, courses_taken(record)
-    user = models.ForeignKey(User)
-    option = models.ForeignKey(Option)
-    # busy_times don't need to be defined here
-    courses_taken = models.ManyToManyField("record")
-
-
-# PLAN Make a class CourseList which is a bag of Course Objects.
-# Have Schedule, Sequence etc. extend CourseList and implement their own ordering.
-
-class CourseList(models.Model):
-    """
-
-    """
-
-
 class Schedule(models.Model):
     """
     Contains Timeslot objects.
     """
-
-
-class Program(models.Model):
-    """
-    A program can have one of many offered sequences.
-    """
-    name = models.CharField(max_length=255)
-
-
-class Option(models.Model):
-    """
-    An option carries a course sequence.
-    """
-    name = models.CharField(max_length=255)
-
-
-class Sequence(CourseList):
-    """
-        A Collection of Courses ordered by semester. Based on Student(User)'s Program
-
-    """
-    user = models.ForeignKey(User)
-    program = models.ForeignKey(Program)
-    courses = models.ManyToManyField(Course)

@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
 import re
 import datetime
+
 from bs4 import BeautifulSoup
-from django.core.management.base import BaseCommand, CommandError
+from django.core.management.base import BaseCommand
+
 from scheduler.models import *
 
 
