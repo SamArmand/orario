@@ -89,6 +89,12 @@ class SectionSlot(TimeSlot):
     class Meta:
         abstract = True
 
+
+    @property
+    def __unicode__(self):
+        return "%s: %s, (%s-%s)" % (self.__class__.__name__, self.section_code, self.begin_time, self.end_time)
+
+
     def __init__(self, *args, **kwargs):
         dict = kwargs.pop('dict', None)
         super(SectionSlot, self).__init__(*args, **kwargs)

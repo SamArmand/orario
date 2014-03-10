@@ -3,7 +3,7 @@ import re
 import datetime
 from bs4 import BeautifulSoup
 from django.core.management.base import BaseCommand, CommandError
-from ...scheduler.models import *
+from scheduler.models import *
 
 
 class Command(BaseCommand):
@@ -53,6 +53,7 @@ class Command(BaseCommand):
                     # Row contains section info
                     elif terms.match(row.contents[2].text) is not None:
                         handle_section(section, row)
+                        print section
                 except IndexError:
                     pass
                 except AttributeError:
