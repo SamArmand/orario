@@ -121,9 +121,6 @@ DocProject/Help/*.hhp
 DocProject/Help/Html2
 DocProject/Help/html
 
-# PyCharm
-.idea/
-
 # Click-Once directory
 publish/
 
@@ -185,9 +182,6 @@ $RECYCLE.BIN/
 # Mac crap
 .DS_Store
 
-# Output files cuz everything needs a header
-*.out
-
 #############
 ## Python
 #############
@@ -218,3 +212,11 @@ pip-log.txt
 
 #Mr Developer
 .mr.developer.cfg
+
+##### CUSTOM ADDED IGNORES
+
+# Output files cuz everything needs a header
+*.out
+
+# PyCharm
+.idea/
