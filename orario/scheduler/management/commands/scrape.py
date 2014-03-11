@@ -55,16 +55,15 @@ class Command(BaseCommand):
                         self.handle_note(row)
                     # Row contains section info
                     elif terms.match(row.contents[2].text) is not None:
-                        self.stdout.write('Begin extracting section row')
                         self.handle_section(section, row)
                         if section.pk is None:
                             self.stdout.write('Skipped section')
                         else :
                             self.stdout.write(section.__unicode__())
                 except IndexError, e:
-                    self.stdout.write(e.message)
+                    self.stdout.write(e.__unicode__())
                 except AttributeError, e:
-                    self.stdout.write(e.message)
+                    self.stdout.write(e.__unicode__())
 
 
     def handle_prereqs(self, row):
