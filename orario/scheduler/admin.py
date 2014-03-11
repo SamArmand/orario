@@ -1,3 +1,6 @@
 from django.contrib import admin
+from scheduler.models import *
 
-# Register your models here.
+admin.site.register(LectureSlot)
+admin.site.register(TutorialSlot)
+admin.site.register(LabSlot)

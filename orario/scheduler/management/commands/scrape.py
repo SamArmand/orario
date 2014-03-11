@@ -57,7 +57,10 @@ class Command(BaseCommand):
                     elif terms.match(row.contents[2].text) is not None:
                         self.stdout.write('Begin extracting section row')
                         self.handle_section(section, row)
-                        self.stdout.write(section.__unicode__())
+                        if section.pk is None:
+                            self.stdout.write('Skipped section')
+                        else :
+                            self.stdout.write(section.__unicode__())
                 except IndexError, e:
                     self.stdout.write(e.message)
                 except AttributeError, e:
