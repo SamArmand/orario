@@ -32,7 +32,6 @@ def validate_days(days):
 
 
 class TimeSlot(models.Model):
-
     label = models.CharField(max_length=50)
     begin_time = models.TimeField()
     end_time = models.TimeField()
@@ -56,7 +55,6 @@ class TimeSlot(models.Model):
         - Postcondition(s): none, (does not change state)
         """
         assert isinstance(slot, TimeSlot)
-
         if ((self.days & slot.days)  # Bitwise AND to check for conflicting days
             and ((self.begin_time < slot.end_time)
                  or (slot.begin_time < self.end_time))):
@@ -84,7 +82,10 @@ class SectionSlot(TimeSlot):
         abstract = True
 
     def __unicode__(self):
-        return "%s: %s, (%s-%s)" % (self.__class__.__name__, self.section_code, self.begin_time, self.end_time)
+        return "%s: %s, (%s-%s)" % (self.__class__.__name__,
+                                    self.section_code,
+                                    self.begin_time.strftime('%H:%M'),
+                                    self.end_time.strftime('%H:%M'))
 
     def __init__(self, *args, **kwargs):
         sect_dict = kwargs.pop('sect_dict', None)
