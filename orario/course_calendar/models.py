@@ -13,6 +13,9 @@ class Course(models.Model):
     credits = models.DecimalField(max_digits=2, decimal_places=1)  # example: 3.5
     prereqs = models.ManyToManyField("self", symmetrical=False)
 
+    def __unicode__(self):
+        return self.number
+
 
 class Section(models.Model):
     """
@@ -23,10 +26,12 @@ class Section(models.Model):
     tutorial = models.ForeignKey(TutorialSlot, null=True, blank=True)
     lab = models.ForeignKey(LabSlot, null=True, blank=True)
 
-    @property
     def __unicode__(self):
-        # TODO Check if fails if tutorial == NULL or lab == NULL
-        return string.join([self.lecture.section_code, self.tutorial.section_code, self.lab.section_code])
+        return string.join([
+            self.course.__unicode__(),
+            self.lecture.section_code,
+            self.tutorial.section_code if self.tutorial is not None else '',
+            self.lab.section_code if self.lab is not None else ''])
 
 
 class Program(models.Model):

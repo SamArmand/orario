@@ -75,17 +75,16 @@ class SectionSlot(TimeSlot):
     class Meta:
         abstract = True
 
-    @property
     def __unicode__(self):
         return "%s: %s, (%s-%s)" % (self.__class__.__name__, self.section_code, self.begin_time, self.end_time)
 
     def __init__(self, *args, **kwargs):
-        sect_dict = kwargs.pop('dict', None)
+        sect_dict = kwargs.pop('sect_dict', None)
         super(SectionSlot, self).__init__(*args, **kwargs)
         if sect_dict is not None:
             self.fill_from_dict(sect_dict)
 
-    def fill_fron_dict(self, sect_dict):
+    def fill_from_dict(self, sect_dict):
         self.begin_time = sect_dict['begin_time']
         self.end_time = sect_dict['end_time']
         self.days = sect_dict['days']
