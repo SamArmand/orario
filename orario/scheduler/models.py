@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+from django.core.exceptions import ValidationError
 
 # GEORGE NOTES
 #     delete this shizz
@@ -25,48 +26,55 @@ SATURDAY = 0b100000
 SUNDAY = 0b1000000
 
 
+def validate_days(days):
+    if days < 0 or days > 0b1111111:
+        raise ValidationError('days out of range')
+
+
 class TimeSlot(models.Model):
+
     label = models.CharField(max_length=50)
     begin_time = models.TimeField()
     end_time = models.TimeField()
-    days = models.IntegerField()
+    days = models.IntegerField(validators=[validate_days])
 
     class Meta:
+
         """
-            [Django Metadata Options Class](https://docs.djangoproject.com/en/dev/topics/db/models/#meta-options)
-            Modifies the outer class to configure the model for django. Used to make a class abstract
+        [Django Metadata Options Class](https://docs.djangoproject.com/en/dev/topics/db/models/#meta-options)
+        Modifies the outer class to configure the model for django. Used to make a class abstract
         """
         abstract = True
 
     def conflicts_with(self, slot):
-        """ 
-            @param slot: TimeSlot object
-            @return: Boolean value, True if TimeField values intersect.
-            - Description: Compares self with parameter TimeSlot object.
-                Checks if passed parameter occupies the same space as self.
-            - Precondition(s): slot must be a valid TimeSlot object => isinstance(slot,TimeSlot)
-            - Postcondition(s):none, (does not change state)
         """
+        @param slot: TimeSlot object
+        @return: Boolean value, True if TimeField values intersect.
+        - Description: Compares self with parameter TimeSlot object.
+            Checks if passed parameter occupies the same space as self.
+        - Precondition(s): slot must be a valid TimeSlot object => isinstance(slot,TimeSlot)
+        - Postcondition(s): none, (does not change state)
+        """
+        assert isinstance(slot, TimeSlot)
+
         if ((self.days & slot.days)  # Bitwise AND to check for conflicting days
-                and ((self.begin_time < slot.end_time) 
-                     or (slot.begin_time < self.end_time))):
+            and ((self.begin_time < slot.end_time)
+                 or (slot.begin_time < self.end_time))):
             return True
         return False
 
 
 class BusySlot(TimeSlot):
     """
-        - Description: BusySlot objects represent periods of time that a user prefers not to alot to school.
-        - Precondition(s):
-        - Postcondition(s):
+    Description: BusySlot objects represent periods of time that a user prefers not to allot to school.
     """
     user = models.ForeignKey(settings.AUTH_USER_MODEL)
 
 
 class SectionSlot(TimeSlot):
     """
-        Contains a Course Object. Has a type of lec, tut, or lab.
-        Example: type:lec, code: 'AA', instructor: 'Aiman Hanna',
+    Contains a Course Object. Has a type of lec, tut, or lab.
+    Example: type:lec, code: 'AA', instructor: 'Aiman Hanna',
     """
     section_code = models.CharField(max_length=2)  # "Lect AA" >> Just the AA part
     instructor = models.CharField(max_length=255)  # "Aiman Hanna"

@@ -6,6 +6,7 @@ class SectionInline(admin.StackedInline):
     extra = 0
 
 class CourseAdmin(admin.ModelAdmin):
+    list_display = ('number', 'title',)
     inlines = [SectionInline,]
 
 admin.site.register(Course, CourseAdmin)
