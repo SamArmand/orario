@@ -94,7 +94,7 @@ class Command(BaseCommand):
         """
         # Check if canceled
         if 'Canceled' in row.contents[3].text:
-
+            return
 
         times = to_time(row.contents[4].text.split()[1])
         sect_dict = {
