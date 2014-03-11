@@ -11,7 +11,8 @@ class Course(models.Model):
     number = models.CharField(max_length=10)  # represented as ID in domain model
     title = models.CharField(max_length=255)  # represented as Name in domain model
     credits = models.DecimalField(max_digits=2, decimal_places=1)  # example: 3.5
-    prereqs = models.ManyToManyField("self", symmetrical=False)
+    prereqs = models.ManyToManyField("self", symmetrical=False, related_name='prereq_by')
+    coreqs = models.ManyToManyField("self", symmetrical=False, related_name='coreq_by')
 
     def __unicode__(self):
         return self.number
