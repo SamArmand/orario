@@ -8,6 +8,6 @@ class SectionInline(admin.StackedInline):
 class CourseAdmin(admin.ModelAdmin):
     list_display = ('number', 'title',)
     inlines = [SectionInline,]
-    filter_horizontal = ('prereqs',)
+    filter_horizontal = ('prereqs', 'coreqs',)
 
 admin.site.register(Course, CourseAdmin)
