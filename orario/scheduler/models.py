@@ -15,8 +15,6 @@ from django.core.exceptions import ValidationError
 #     TODOOOO
 #         Implement __unicode__ methods for all classes
 
-# As used by Concordia's schedules
-
 MONDAY = 0b1
 TUESDAY = 0b10
 WEDNESDAY = 0b100

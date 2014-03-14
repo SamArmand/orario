@@ -1,5 +1,6 @@
 import string
 from django.db import models
+from sortedm2m.fields import SortedManyToManyField
 from scheduler.models import LectureSlot, TutorialSlot, LabSlot
 
 
@@ -48,3 +49,4 @@ class Option(models.Model):
     """
     name = models.CharField(max_length=255)
     program = models.ForeignKey(Program)
+    sequence = SortedManyToManyField(Course)

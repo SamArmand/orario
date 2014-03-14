@@ -35,7 +35,7 @@ class Command(BaseCommand):
 
             course.number = course_number.text
             course.title = course_title.text
-            course.credits = int(re.match(r'\d+', course_credits.text).group())
+            course.credits = int(re.match(r'\d+', course_credits.text).group())  # TODO make it capture decimals
             course.save()
 
             section = Section()  # Stub Section to create Section objects as we iterate through the rows.
@@ -90,9 +90,10 @@ class Command(BaseCommand):
 
 
     def handle_section(self, section, row):
-        """ Handles adding table row into the database as
-            a new SectionSlot and either updates given section
-            or duplicates it with new information.
+        """
+        Handles adding table row into the database as
+        a new SectionSlot and either updates given section
+        or duplicates it with new information.
         """
         # Check if canceled
         if 'Canceled' in row.contents[3].text:
@@ -100,11 +101,12 @@ class Command(BaseCommand):
 
         times = to_time(row.contents[4].text.split()[1])
         sect_dict = {
-            'term': row.contents[2].text[-1],
-            'type': row.contents[3].text.split()[0],
-            'section_code': row.contents[3].text.split()[1],
-            'days': to_binary(row.contents[4].text.split()[0]),
-            'begin_time': times[0], 'end_time': times[1],
+            'term': row.contents[2].text[-1],  # Assumption: Last character of term cell is always the term number
+            'type': row.contents[3].text.split()[0],  # First substring is always {Lect, Tut, Lab}
+            'section_code': row.contents[3].text.split()[1],  # Second substring is the section code, e.g. AA, JK
+            'days': to_binary(row.contents[4].text.split()[0]),  # 0th element is the days, e.g. -T-J---
+            'begin_time': times[0],
+            'end_time': times[1],
             'room': row.contents[5].text.strip(),
             'instructor': row.contents[6].text.strip()
         }
@@ -113,6 +115,9 @@ class Command(BaseCommand):
             # We always create a new Section for a new LectureSlot.
             lect = LectureSlot(sect_dict=sect_dict)
             lect.save()
+            section.pk = None
+            section.tutorial = None
+            section.lab = None
             section.lecture = lect
             section.save()
         elif sect_dict['type'] == 'Tut':
