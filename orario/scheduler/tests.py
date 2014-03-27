@@ -56,3 +56,12 @@ class TimeSlotTestCase(TestCase):
         lect1 = LectureSlot.objects.get(section_code="BB")
         self.assertTrue(lect0.conflicts_with(lect1))
         self.assertTrue(lect1.conflicts_with(lect0))
+
+    def test_time_no_conflict(self):
+        lect0 = LectureSlot.objects.get(section_code="AA")
+        lect1 = LectureSlot.objects.get(section_code="CC")
+        lect2 = LectureSlot.objects.get(section_code="DD")
+        self.assertFalse(lect0.conflicts_with(lect1))
+        self.assertFalse(lect1.conflicts_with(lect0))
+        self.assertFalse(lect0.conflicts_with(lect2))
+        self.assertFalse(lect2.conflicts_with(lect0))
