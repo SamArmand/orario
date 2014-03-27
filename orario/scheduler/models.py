@@ -82,7 +82,7 @@ class SectionSlot(TimeSlot):
     #: The code for the section, e.g. "AA"
     section_code = models.CharField(max_length=2)
     #: The instructor for the section.
-    instructor = models.CharField(max_length=255)
+    instructor = models.CharField(max_length=255, null=True, blank=True)
     #: The room number for the section.
     room = models.CharField(max_length=255)
 
@@ -150,9 +150,9 @@ class Schedule(models.Model):
     #: The term number as per Concordia University's conventions.
     term = models.IntegerField()
     #: Auto-generated schedule must contain these courses.
-    courses = models.ManyToManyField('Course')
+    courses = models.ManyToManyField('course_calendar.Course')
     #: Auto-generated schedule must contain these sections.
-    sections = models.ManyToManyField('Section')
+    sections = models.ManyToManyField('course_calendar.Section')
 
     def add_course(self, course):
         """
