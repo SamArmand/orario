@@ -55,15 +55,28 @@ class TimeSlot(models.Model):
         """
         Returns whether this TimeSlot conflicts with the specified
         slot.
+        :type slot: TimeSlot
+        :rtype : bool
         """
         if slot is None:
             return False
         assert isinstance(slot, TimeSlot)
-        if ((self.days & slot.days)  # Bitwise AND to check for conflicting days
-            and ((self.begin_time < slot.end_time)
-                 or (slot.begin_time < self.end_time))):
-            return True
+        if self.days & slot.days:  # Bitwise AND to check for conflicting days
+            return self.wraps(slot) or slot.wraps(self)
         return False
+
+    def wraps(self, slot):
+        """
+        Returns whether this TimeSlot is wraps another.
+        :type slot: TimeSlot
+        :rtype: bool
+        """
+        assert isinstance(slot, TimeSlot)
+        if (self.begin_time < slot.begin_time < self.end_time
+            or slot.begin_time < self.end_time < slot.end_time):
+            return True
+        else:
+            return False
 
 
 class BusySlot(TimeSlot):
