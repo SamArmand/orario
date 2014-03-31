@@ -74,9 +74,13 @@ class AddCourseTestCase(TestCase):
         """
         Inserts dummy data into the databse fo testing.
         """
-        self.student = Student.objects.create_user('test', 'test@test.com', 'testpassword')  # create_user is a helper method from the django AbstractUser class which Student inherits
-        self.schedule = Schedule.objects.create(
-            student=student,
+        self.student1 = Student.objects.create_user('test', 'test@test.com', 'testpassword')  # create_user is a helper method from the django AbstractUser class which Student inherits
+        self.student2 = Student.objects.create_user('test2', 'test2@test.com', 'testpassword')
+        self.schedule1 = Schedule.objects.create(
+            student=self.student1,
+            term=2)
+        self.schedule2 = Schedule.objects.create(
+            student=self.student2,
             term=2)
         self.course1 = Course.objects.create(
             number='COMP 248',
@@ -86,11 +90,34 @@ class AddCourseTestCase(TestCase):
             number='COMP 249',
             title='Java 2',
             credits=3)
-        self.course1.prereqs.add(course2)
+        self.course2.prereqs.add(self.course1)
+        self.student1.courses_taken.add(self.course1)
     
     def test_add_course_success(self):
-        legit1 = self.schedule.add_course(self.course1)
-        legit2 = self.schedule.add_course(self.course2)
-        self.assertTrue(legit1)
-        self.assertTrue(legit2)
+        """
+        self.schedule1 belongs to student1, who has taken COMP 248.
+        """
+        legit = self.schedule1.add_course(self.course2)
+        self.assertTrue(legit)
     
+    def test_add_course_fail(self):
+        """
+        self.schedule2 belongs to student2, who has NOT taken COMP 248. Therefore adding COMP 249 should fail.
+        """
+        fail = self.schedule2.add_course(self.course2)
+        self.assertFalse(fail)
+        
+class RemoveCourseTestCase(TestCase):
+    def setUp(self):
+        self.schedule1 = Schedule.objects.create(
+            student=self.student1,
+            term=2)
+        self.course1 = Course.objects.create(
+            number='COMP 248',
+            title='Java 1',
+            credits=3)
+        self.course2 = Course.objects.create(
+            number='COMP 248',
+            title='Java 1',
+            credits=3)
+            
