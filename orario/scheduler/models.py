@@ -179,10 +179,10 @@ class Schedule(models.Model):
         # TODO: Figure out how to check preceding schedules
         from course_calendar.models import Course
         assert isinstance(course, Course)
-        logger.debug([prereq in self.courses.all() for prereq in self.student.courses_taken.all()])
-        logger.debug([coreq in self.courses.all() for coreq in course.coreqs.all()])
+        print [prereq in self.student.courses_taken.all() for prereq in course.prereqs.all()]
+        print [coreq in self.courses.all() for coreq in course.coreqs.all()]
         if (
-            all(prereq in self.courses.all() for prereq in self.student.courses_taken.all())
+            all(prereq in self.student.courses_taken.all() for prereq in course.prereqs.all())
             and
             all(coreq in self.courses.all() for coreq in course.coreqs.all())
         ):

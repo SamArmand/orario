@@ -74,7 +74,8 @@ class AddCourseTestCase(TestCase):
         """
         Inserts dummy data into the databse fo testing.
         """
-        self.student1 = Student.objects.create_user('test', 'test@test.com', 'testpassword')  # create_user is a helper method from the django AbstractUser class which Student inherits
+        # create_user is a helper method from the django AbstractUser class which Student inherits
+        self.student1 = Student.objects.create_user('test', 'test@test.com', 'testpassword')
         self.student2 = Student.objects.create_user('test2', 'test2@test.com', 'testpassword')
         self.schedule1 = Schedule.objects.create(
             student=self.student1,
@@ -106,7 +107,9 @@ class AddCourseTestCase(TestCase):
         """
         fail = self.schedule2.add_course(self.course2)
         self.assertFalse(fail)
-        
+
+
+
 class RemoveCourseTestCase(TestCase):
     def setUp(self):
         self.schedule1 = Schedule.objects.create(
