@@ -1,0 +1,6 @@
+Django==1.6.2
+beautifulsoup4==4.3.2
+django-sortedm2m==0.7.0
+ipython==1.2.1
+pyreadline==2.0
+six==1.5.2
