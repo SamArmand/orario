@@ -1,5 +1,7 @@
 from django.test import TestCase
 from models import *
+from student.models import *
+from course_calendar.models import *
 
 from datetime import time
 
@@ -65,3 +67,30 @@ class TimeSlotTestCase(TestCase):
         self.assertFalse(lect1.conflicts_with(lect0))
         self.assertFalse(lect0.conflicts_with(lect2))
         self.assertFalse(lect2.conflicts_with(lect0))
+
+        
+class AddCourseTestCase(TestCase):
+    def setUp(self):
+        """
+        Inserts dummy data into the databse fo testing.
+        """
+        self.student = Student.objects.create_user('test', 'test@test.com', 'testpassword')  # create_user is a helper method from the django AbstractUser class which Student inherits
+        self.schedule = Schedule.objects.create(
+            student=student,
+            term=2)
+        self.course1 = Course.objects.create(
+            number='COMP 248',
+            title='Java 1',
+            credits=3)
+        self.course2 = Course.objects.create(
+            number='COMP 249',
+            title='Java 2',
+            credits=3)
+        self.course1.prereqs.add(course2)
+    
+    def test_add_course_success(self):
+        legit1 = self.schedule.add_course(self.course1)
+        legit2 = self.schedule.add_course(self.course2)
+        self.assertTrue(legit1)
+        self.assertTrue(legit2)
+    
