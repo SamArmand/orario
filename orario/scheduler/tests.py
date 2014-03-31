@@ -109,15 +109,51 @@ class AddCourseTestCase(TestCase):
         
 class RemoveCourseTestCase(TestCase):
     def setUp(self):
+        self.student1 = Student.objects.create_user('test2', 'test2@test.com', 'testpassword')
         self.schedule1 = Schedule.objects.create(
             student=self.student1,
             term=2)
         self.course1 = Course.objects.create(
-            number='COMP 248',
-            title='Java 1',
+            number='COMP 371',
+            title='Computer Graphics',
             credits=3)
         self.course2 = Course.objects.create(
-            number='COMP 248',
-            title='Java 1',
+            number='COMP 376',
+            title='Intro to Game Developement',
             credits=3)
-            
+        self.course2.coreqs.add(self.course1)
+    
+    def test_remove_course (self):
+        self.schedule1.courses.add(self.course1)
+        self.schedule1.courses.add(self.course2)
+        self.schedule1.remove_course(self.course2)
+        """
+        self.schedule1 should not contain course2, but it should still contain course1.
+        """
+        legitTrue = course1 in self.schedule1.courses.all()
+        legitFalse = course2 in self.schedule1.courses.all()
+        self.assertTrue(legitTrue)
+        self.assertFalse(legitFalse)
+        
+        """
+        Testing the removal of the corequisite course
+        """
+        self.schedule1.courses.add(self.course2)
+        self.schedule1.remove_course(self.course1)
+        """
+        self.schedule1 should not contain course1.
+        """
+        legitFalse = course1 in self.schedule1.courses.all()
+        self.assertFalse(legitFalse)
+        """
+        self.schedule1 should not contain course2.
+        """
+        legitFalse = course2 in self.schedule1.courses.all()
+        self.assertFalse(legitFalse)
+        
+    
+        
+    
+        
+        
+    

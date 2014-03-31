@@ -192,7 +192,6 @@ class Schedule(models.Model):
         assert isinstance(course, Course)
         self.courses.remove([Course.objects.filter(coreqs__contains=course), course])
 
-
     def add_section(self, section):
         # TODO conflict checking
         # TODO but u test?
