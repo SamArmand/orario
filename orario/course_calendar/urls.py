@@ -1,0 +1,5 @@
+from django.conf.urls import patterns
+from django.views.generic import TemplateView
+
+urlpatterns = patterns('',
+)

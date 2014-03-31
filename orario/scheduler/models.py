@@ -187,6 +187,50 @@ class Schedule(models.Model):
             return False
 
     def remove_course(self, course):
+        # TODO but u test?
         from course_calendar.models import Course
         assert isinstance(course, Course)
-        self.courses.filter(coreqs__contains=course).remove()
+        self.courses.remove([Course.objects.filter(coreqs__contains=course), course])
+
+
+    def add_section(self, section):
+        # TODO conflict checking
+        # TODO but u test?
+        from course_calendar.models import Section
+        assert isinstance(section, Section)
+        if (self.add_course(section.course)):
+            self.sections.add(section)
+            return True
+        else:
+            return False
+
+    def remove_section(self, section):
+        # TODO but u test? i liek nasty coed
+        from course_calendar.models import Section
+        assert isinstance(section, Section)
+        self.sections.remove([
+            Section.objects.filter(course__coreqs__contains=section.course),
+            section
+        ])
+
+    def generate(self):
+        """
+        Returns a list of courses it failed to schedule.
+        :rtype: Course[]
+        """
+        # TODO zis, noooo
+        # Most nasty schedule generating thing evar.
+        freljords = []
+        for course in self.courses.all():  # go through courses
+            if course in [section.course for section in self.sections]:
+                pass
+            else:
+                sections = course.section_set.all()
+                section_count = len(sections)
+                for section in sections:  # try each section in course
+                    section_count -= 1
+                    if self.add_section(section):  # returns true if success
+                        break
+                if section_count == 0:
+                    freljords.append(course)
+        return freljords
