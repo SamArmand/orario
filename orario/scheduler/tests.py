@@ -91,23 +91,38 @@ class AddCourseTestCase(TestCase):
             number='COMP 249',
             title='Java 2',
             credits=3)
+        self.course3 = Course.objects.create(
+            number='COMP 240',
+            title='Imaginary course that coreqs Java 1',
+            credits=3)
         self.course2.prereqs.add(self.course1)
+        self.course3.coreqs.add(self.course1)
         self.student1.courses_taken.add(self.course1)
     
-    def test_add_course_success(self):
+    def test_add_course_prereq_success(self):
         """
         self.schedule1 belongs to student1, who has taken COMP 248.
         """
         legit = self.schedule1.add_course(self.course2)
         self.assertTrue(legit)
     
-    def test_add_course_fail(self):
+    def test_add_course_prereq_fail(self):
         """
         self.schedule2 belongs to student2, who has NOT taken COMP 248. Therefore adding COMP 249 should fail.
         """
         fail = self.schedule2.add_course(self.course2)
         self.assertFalse(fail)
 
+    def test_add_course_coreq_success(self):
+        """
+        self.schedule1 belongs to student1, who has taken COMP 248.
+        """
+        legit = self.schedule1.add_course(self.course3)
+        self.assertTrue(legit)
+
+    def test_add_course_coreq_fail(self):
+        fail = self.schedule2.add_course(self.course3)
+        self.assertFalse(fail)
 
 
 class RemoveCourseTestCase(TestCase):

@@ -2,6 +2,7 @@ from django.db import models
 from django.conf import settings
 from django.core.exceptions import ValidationError
 
+import itertools
 import logging
 logger = logging.getLogger(__name__)
 
@@ -182,9 +183,12 @@ class Schedule(models.Model):
         print [prereq in self.student.courses_taken.all() for prereq in course.prereqs.all()]
         print [coreq in self.courses.all() for coreq in course.coreqs.all()]
         if (
-            all(prereq in self.student.courses_taken.all() for prereq in course.prereqs.all())
+            all(prereq in self.student.courses_taken.all()
+                for prereq in course.prereqs.all())
             and
-            all(coreq in self.courses.all() for coreq in course.coreqs.all())
+            all(coreq in itertools.chain(self.courses.all(), self.student.courses_taken.all())
+                for coreq in course.coreqs.all())
+            and not course in self.courses
         ):
             self.courses.add(course)
             return True
