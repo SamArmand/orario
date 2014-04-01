@@ -1,9 +1,35 @@
 from django.test import TestCase
+from django.core.exceptions import ValidationError
 from models import *
 from student.models import *
 from course_calendar.models import *
 
 from datetime import time
+
+class ValidateDaysTestCase(TestCase):
+    def test_validate_days_success(self):
+        try:
+            validate_days(0b1)
+            ex = False
+        except ValidationError:
+            ex = True
+        self.assertFalse(ex)
+
+    def test_validate_days_below_range(self):
+        try:
+            validate_days(-1)
+            ex = False
+        except ValidationError:
+            ex = True
+        self.assertTrue(ex)
+
+    def test_validate_days_above_range(self):
+        try:
+            validate_days(0b10000000)
+            ex = False
+        except ValidationError:
+            ex = True
+        self.assertTrue(ex)
 
 class TimeSlotTestCase(TestCase):
     """
@@ -63,10 +89,20 @@ class TimeSlotTestCase(TestCase):
         lect1 = LectureSlot.objects.get(section_code="CC")
         self.assertFalse(lect0.conflicts_with(lect1))
 
-    def test_conflicts_with_fail_hours(self):
+    def test_conflicts_with_fail_times(self):
         lect0 = LectureSlot.objects.get(section_code="AA")
         lect1 = LectureSlot.objects.get(section_code="DD")
         self.assertFalse(lect0.conflicts_with(lect1))
+
+    def test_wraps_success(self):
+        lect0 = LectureSlot.objects.get(section_code="AA")
+        lect1 = LectureSlot.objects.get(section_code="BB")
+        self.assertTrue(lect0.wraps(lect1))
+
+    def test_wraps_fail(self):
+        lect0 = LectureSlot.objects.get(section_code="AA")
+        lect1 = LectureSlot.objects.get(section_code="DD")
+        self.assertFalse(lect0.wraps(lect1))
 
 
 class ScheduleTestCase(TestCase):
@@ -271,10 +307,37 @@ class ScheduleTestCase(TestCase):
         self.assertTrue(self.sec3_c3 in schedule.sections.all())  # postcondition
 
     def test_add_section_coreq_fail(self):
-        pass
+        student = Student.objects.create_user('test_add_section_coreq_fail', 'test@test.com', 'testpassword')
+        schedule = Schedule.objects.create(
+            student=student,
+            term=2)
+        # Add section that has c1 as coreq
+        result = schedule.add_section(self.sec3_c3)
+        self.assertFalse(result)  # return value
+        self.assertFalse(self.sec3_c3 in schedule.sections.all())  # postcondition
 
     def test_remove_section_typical(self):
-        pass
+        student = Student.objects.create_user('test_remove_section_typical', 'test@test.com', 'testpassword')
+        schedule = Schedule.objects.create(
+            student=student,
+            term=2)
+        schedule.courses.add(self.c1)
+        schedule.sections.add(self.sec1_c1)
+        # Remove the section
+        schedule.remove_section(self.sec1_c1)
+        self.assertFalse(self.sec1_c1 in schedule.sections.all())  # postcondition
 
     def test_remove_section_coreq(self):
-        pass
+        student = Student.objects.create_user('test_remove_section_coreq', 'test@test.com', 'testpassword')
+        schedule = Schedule.objects.create(
+            student=student,
+            term=2)
+        schedule.courses.add(self.c1)
+        schedule.sections.add(self.sec1_c1)
+        schedule.courses.add(self.c3_co_c1)
+        schedule.sections.add(self.sec3_c3)
+        # Remove the section
+        schedule.remove_section(self.sec1_c1)
+        # Postconditions
+        self.assertFalse(self.sec3_c3 in schedule.sections.all())
+        self.assertFalse(self.sec1_c1 in schedule.sections.all())

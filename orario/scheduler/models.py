@@ -221,7 +221,7 @@ class Schedule(models.Model):
         from course_calendar.models import Section
         assert isinstance(section, Section)
         self.sections.remove(*[dep.id for dep in Section.objects.filter(course__coreqs=section.course).all()])
-        self.remove(section)
+        self.sections.remove(section)
 
     def generate(self):
         """
