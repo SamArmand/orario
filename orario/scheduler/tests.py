@@ -57,19 +57,16 @@ class TimeSlotTestCase(TestCase):
         lect0 = LectureSlot.objects.get(section_code="AA")
         lect1 = LectureSlot.objects.get(section_code="BB")
         self.assertTrue(lect0.conflicts_with(lect1))
-        self.assertTrue(lect1.conflicts_with(lect0))
 
     def test_conflicts_with_fail_days(self):
         lect0 = LectureSlot.objects.get(section_code="AA")
         lect1 = LectureSlot.objects.get(section_code="CC")
         self.assertFalse(lect0.conflicts_with(lect1))
-        self.assertFalse(lect1.conflicts_with(lect0))
 
     def test_conflicts_with_fail_hours(self):
         lect0 = LectureSlot.objects.get(section_code="AA")
         lect1 = LectureSlot.objects.get(section_code="DD")
         self.assertFalse(lect0.conflicts_with(lect1))
-        self.assertFalse(lect1.conflicts_with(lect0))
 
 
 class ScheduleTestCase(TestCase):
@@ -143,8 +140,9 @@ class ScheduleTestCase(TestCase):
         schedule = Schedule.objects.create(
             student=student,
             term=2)
-        legit = schedule.add_course(self.c1)
-        self.assertTrue(legit)
+        result = schedule.add_course(self.c1)
+        self.assertTrue(result)  # return value
+        self.assertTrue(self.c1 in schedule.courses.all())  # postcondition
 
     def test_add_course_prereq_success(self):
         """
@@ -155,8 +153,9 @@ class ScheduleTestCase(TestCase):
             student=student,
             term=2)
         student.courses_taken.add(self.c1)
-        legit = schedule.add_course(self.c2_pre_c1)
-        self.assertTrue(legit)
+        result = schedule.add_course(self.c2_pre_c1)
+        self.assertTrue(result)
+        self.assertTrue(self.c2_pre_c1 in schedule.courses.all())
 
     def test_add_course_prereq_fail(self):
         """
@@ -166,8 +165,9 @@ class ScheduleTestCase(TestCase):
         schedule = Schedule.objects.create(
             student=student,
             term=2)
-        fail = schedule.add_course(self.c2_pre_c1)
-        self.assertFalse(fail)
+        result = schedule.add_course(self.c2_pre_c1)
+        self.assertFalse(result)  # return value
+        self.assertFalse(self.c2_pre_c1 in schedule.courses.all())  # postcondition
 
     def test_add_course_coreq_success(self):
         """
@@ -178,8 +178,9 @@ class ScheduleTestCase(TestCase):
             student=student,
             term=2)
         schedule.courses.add(self.c1)
-        legit = schedule.add_course(self.c3_co_c1)
-        self.assertTrue(legit)
+        result = schedule.add_course(self.c3_co_c1)
+        self.assertTrue(result)  # return value
+        self.assertTrue(self.c3_co_c1 in schedule.courses.all())  # postcondition
 
     def test_add_course_coreq_fail(self):
         """
@@ -189,8 +190,9 @@ class ScheduleTestCase(TestCase):
         schedule = Schedule.objects.create(
             student=student,
             term=2)
-        fail = schedule.add_course(self.c3_co_c1)
-        self.assertFalse(fail)
+        result = schedule.add_course(self.c3_co_c1)
+        self.assertFalse(result)  # return value
+        self.assertFalse(self.c3_co_c1 in schedule.courses.all())  # postcondition
 
     def test_remove_course_typical(self):
         """
@@ -206,10 +208,8 @@ class ScheduleTestCase(TestCase):
         # Remove the dependent course
         schedule.remove_course(self.c3_co_c1)
         # self.schedule1 should not contain course2, but it should still contain course1.
-        legitTrue = self.c1 in schedule.courses.all()
-        legitFalse = self.c3_co_c1 in schedule.courses.all()
-        self.assertTrue(legitTrue)
-        self.assertFalse(legitFalse)
+        self.assertTrue(self.c1 in schedule.courses.all())
+        self.assertFalse(self.c3_co_c1 in schedule.courses.all())
 
     def test_remove_course_coreq(self):
         """
@@ -224,23 +224,51 @@ class ScheduleTestCase(TestCase):
         # Testing the removal of the corequisite course
         schedule.remove_course(self.c1)
         # self.schedule1 should not contain course1.
-        legitFalse1 = self.c1 in schedule.courses.all()
         # self.schedule1 should not contain course2.
-        legitFalse2 = self.c3_co_c1 in schedule.courses.all()
-        self.assertFalse(legitFalse1)
-        self.assertFalse(legitFalse2)
+        self.assertFalse(self.c1 in schedule.courses.all())
+        self.assertFalse(self.c3_co_c1 in schedule.courses.all())
 
     def test_add_section_typical(self):
-        pass
+        student = Student.objects.create_user('test_add_section_typical', 'test@test.com', 'testpassword')
+        schedule = Schedule.objects.create(
+            student=student,
+            term=2)
+        # Simple add section
+        result = schedule.add_section(self.sec1_c1)
+        self.assertTrue(result)  # return value
+        self.assertTrue(self.sec1_c1 in schedule.sections.all())  # postcondition
 
     def test_add_section_prereq_success(self):
-        pass
+        student = Student.objects.create_user('test_add_section_prereq_success', 'test@test.com', 'testpassword')
+        schedule = Schedule.objects.create(
+            student=student,
+            term=2)
+        student.courses_taken.add(self.c1)
+        # Add section that has c1 as prereq
+        result = schedule.add_section(self.sec2_c2)
+        self.assertTrue(result)  # return value
+        self.assertTrue(self.sec2_c2 in schedule.sections.all())  # postcondition
 
     def test_add_section_prereq_fail(self):
-        pass
+        student = Student.objects.create_user('test_add_section_prereq_fail', 'test@test.com', 'testpassword')
+        schedule = Schedule.objects.create(
+            student=student,
+            term=2)
+        # Add section that has c1 as prereq
+        result = schedule.add_section(self.sec2_c2)
+        self.assertFalse(result)  # return value
+        self.assertFalse(self.sec2_c2 in schedule.sections.all())  # postcondition
 
     def test_add_section_coreq_success(self):
-        pass
+        student = Student.objects.create_user('test_add_section_coreq_success', 'test@test.com', 'testpassword')
+        schedule = Schedule.objects.create(
+            student=student,
+            term=2)
+        schedule.courses.add(self.c1)
+        # Add section that has c1 as coreq
+        result = schedule.add_section(self.sec3_c3)
+        self.assertTrue(result)  # return value
+        self.assertTrue(self.sec3_c3 in schedule.sections.all())  # postcondition
 
     def test_add_section_coreq_fail(self):
         pass
