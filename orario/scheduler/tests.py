@@ -328,18 +328,3 @@ class ScheduleTestCase(TestCase):
         # Remove the section
         schedule.remove_section(self.sec1_c1)
         self.assertFalse(self.sec1_c1 in schedule.sections.all())  # postcondition
-
-    def test_remove_section_coreq(self):
-        student = Student.objects.create_user('test_remove_section_coreq', 'test@test.com', 'testpassword')
-        schedule = Schedule.objects.create(
-            student=student,
-            term=2)
-        schedule.courses.add(self.c1)
-        schedule.sections.add(self.sec1_c1)
-        schedule.courses.add(self.c3_co_c1)
-        schedule.sections.add(self.sec3_c3)
-        # Remove the section
-        schedule.remove_section(self.sec1_c1)
-        # Postconditions
-        self.assertFalse(self.sec3_c3 in schedule.sections.all())
-        self.assertFalse(self.sec1_c1 in schedule.sections.all())

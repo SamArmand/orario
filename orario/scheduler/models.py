@@ -77,7 +77,7 @@ class TimeSlot(models.Model):
         """
         assert isinstance(slot, TimeSlot)
         if (self.begin_time < slot.begin_time < self.end_time
-            or slot.begin_time < self.end_time < slot.end_time):
+                or slot.begin_time < self.end_time < slot.end_time):
             return True
         else:
             return False
@@ -197,7 +197,6 @@ class Schedule(models.Model):
             return False
 
     def remove_course(self, course):
-        # TODO but u test?
         from course_calendar.models import Course
         assert isinstance(course, Course)
         self.sections.remove(*[dep.id for dep in self.sections.filter(course__coreqs=course).all()])
@@ -207,20 +206,17 @@ class Schedule(models.Model):
 
     def add_section(self, section):
         # TODO conflict checking
-        # TODO but u test?
         from course_calendar.models import Section
         assert isinstance(section, Section)
-        if (self.add_course(section.course)):
+        if self.add_course(section.course):
             self.sections.add(section)
             return True
         else:
             return False
 
     def remove_section(self, section):
-        # TODO but u test? i liek nasty coed
         from course_calendar.models import Section
         assert isinstance(section, Section)
-        self.sections.remove(*[dep.id for dep in Section.objects.filter(course__coreqs=section.course).all()])
         self.sections.remove(section)
 
     def generate(self):
