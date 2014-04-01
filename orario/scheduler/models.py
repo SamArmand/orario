@@ -6,19 +6,6 @@ import itertools
 import logging
 logger = logging.getLogger(__name__)
 
-# GEORGE NOTES
-#     delete this shizz
-#     -- Add Pre/Post/Invariant Everywhere
-#     -- Use docstrings under declaration
-#     -- TimeField():
-#         Time Objects
-#
-#     What's our input?
-#         Student enters desired busy times
-#         Student enters desired courses
-#     TODOOOO
-#         Implement __unicode__ methods for all classes
-
 MONDAY = 0b1
 TUESDAY = 0b10
 WEDNESDAY = 0b100
