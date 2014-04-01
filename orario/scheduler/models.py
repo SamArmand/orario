@@ -188,7 +188,7 @@ class Schedule(models.Model):
             and
             all(coreq in itertools.chain(self.courses.all(), self.student.courses_taken.all())
                 for coreq in course.coreqs.all())
-            and not course in self.courses
+            and not course in self.courses.all()
         ):
             self.courses.add(course)
             return True
@@ -199,7 +199,10 @@ class Schedule(models.Model):
         # TODO but u test?
         from course_calendar.models import Course
         assert isinstance(course, Course)
-        self.courses.remove([Course.objects.filter(coreqs__contains=course), course])
+        self.sections.remove(*[dep.id for dep in self.sections.filter(course__coreqs=course).all()])
+        self.sections.remove(*[sec.id for sec in self.sections.filter(course=course).all()])
+        self.courses.remove(*[dep.id for dep in Course.objects.filter(coreqs=course).all()])
+        self.courses.remove(course)
 
     def add_section(self, section):
         # TODO conflict checking
@@ -216,10 +219,8 @@ class Schedule(models.Model):
         # TODO but u test? i liek nasty coed
         from course_calendar.models import Section
         assert isinstance(section, Section)
-        self.sections.remove([
-            Section.objects.filter(course__coreqs__contains=section.course),
-            section
-        ])
+        self.sections.remove(*[dep.id for dep in Section.objects.filter(course__coreqs=section.course).all()])
+        self.remove(section)
 
     def generate(self):
         """

@@ -69,109 +69,108 @@ class TimeSlotTestCase(TestCase):
         self.assertFalse(lect2.conflicts_with(lect0))
 
         
-class AddCourseTestCase(TestCase):
+class ScheduleTestCase(TestCase):
     def setUp(self):
         """
         Inserts dummy data into the databse fo testing.
         """
+        ## Here we add stub objects for the add course test case
         # create_user is a helper method from the django AbstractUser class which Student inherits
-        self.student1 = Student.objects.create_user('test', 'test@test.com', 'testpassword')
-        self.student2 = Student.objects.create_user('test2', 'test2@test.com', 'testpassword')
-        self.schedule1 = Schedule.objects.create(
-            student=self.student1,
+        self.student_add1 = Student.objects.create_user('test', 'test@test.com', 'testpassword')
+        self.student_add2 = Student.objects.create_user('test2', 'test2@test.com', 'testpassword')
+        self.schedule_add1 = Schedule.objects.create(
+            student=self.student_add1,
             term=2)
-        self.schedule2 = Schedule.objects.create(
-            student=self.student2,
+        self.schedule_add2 = Schedule.objects.create(
+            student=self.student_add2,
             term=2)
-        self.course1 = Course.objects.create(
+        self.course_add1 = Course.objects.create(
             number='COMP 248',
             title='Java 1',
             credits=3)
-        self.course2 = Course.objects.create(
+        self.course_add2 = Course.objects.create(
             number='COMP 249',
             title='Java 2',
             credits=3)
-        self.course3 = Course.objects.create(
+        self.course_add3 = Course.objects.create(
             number='COMP 240',
             title='Imaginary course that coreqs Java 1',
             credits=3)
-        self.course2.prereqs.add(self.course1)
-        self.course3.coreqs.add(self.course1)
-        self.student1.courses_taken.add(self.course1)
+        self.course_add2.prereqs.add(self.course_add1)
+        self.course_add3.coreqs.add(self.course_add1)
+        self.student_add1.courses_taken.add(self.course_add1)
+
+        ## Here we add stub objects for the remove course test case
+        self.student_remove1 = Student.objects.create_user('test3', 'test3@test.com', 'testpassword')
+        self.schedule_remove1 = Schedule.objects.create(
+            student=self.student_remove1,
+            term=2)
+        self.course_remove1 = Course.objects.create(
+            number='COMP 371',
+            title='Computer Graphics',
+            credits=3)
+        self.course_remove2 = Course.objects.create(
+            number='COMP 376',
+            title='Intro to Game Developement',
+            credits=3)
+        self.course_remove2.coreqs.add(self.course_remove1)
     
     def test_add_course_prereq_success(self):
         """
-        self.schedule1 belongs to student1, who has taken COMP 248.
+        self.schedule_add1 belongs to student1, who has taken COMP 248.
         """
-        legit = self.schedule1.add_course(self.course2)
+        legit = self.schedule_add1.add_course(self.course_add2)
         self.assertTrue(legit)
     
     def test_add_course_prereq_fail(self):
         """
-        self.schedule2 belongs to student2, who has NOT taken COMP 248. Therefore adding COMP 249 should fail.
+        self.schedule_add2 belongs to student2, who has NOT taken COMP 248. Therefore adding COMP 249 should fail.
         """
-        fail = self.schedule2.add_course(self.course2)
+        fail = self.schedule_add2.add_course(self.course_add2)
         self.assertFalse(fail)
 
     def test_add_course_coreq_success(self):
         """
-        self.schedule1 belongs to student1, who has taken COMP 248.
+        self.schedule_add1 belongs to student1, who has taken COMP 248.
         """
-        legit = self.schedule1.add_course(self.course3)
+        legit = self.schedule_add1.add_course(self.course_add3)
         self.assertTrue(legit)
 
     def test_add_course_coreq_fail(self):
-        fail = self.schedule2.add_course(self.course3)
+        """
+        self.schedule_add2 belongs to student2, who has NOT taken COMP 248. Therefore adding COMP 240 should fail.
+        """
+        fail = self.schedule_add2.add_course(self.course_add3)
         self.assertFalse(fail)
-
-
-class RemoveCourseTestCase(TestCase):
-    def setUp(self):
-        self.student1 = Student.objects.create_user('test2', 'test2@test.com', 'testpassword')
-        self.schedule1 = Schedule.objects.create(
-            student=self.student1,
-            term=2)
-        self.course1 = Course.objects.create(
-            number='COMP 371',
-            title='Computer Graphics',
-            credits=3)
-        self.course2 = Course.objects.create(
-            number='COMP 376',
-            title='Intro to Game Developement',
-            credits=3)
-        self.course2.coreqs.add(self.course1)
     
-    def test_remove_course (self):
-        self.schedule1.courses.add(self.course1)
-        self.schedule1.courses.add(self.course2)
-        self.schedule1.remove_course(self.course2)
+    def test_remove_course_typical(self):
         """
-        self.schedule1 should not contain course2, but it should still contain course1.
+        course_remove2 depends on course_remove1, so removing 2 should not remove 1.
         """
-        legitTrue = course1 in self.schedule1.courses.all()
-        legitFalse = course2 in self.schedule1.courses.all()
+        # Force add the two courses
+        self.schedule_remove1.courses.add(self.course_remove1)
+        self.schedule_remove1.courses.add(self.course_remove2)
+        # Remove the dependent course
+        self.schedule_remove1.remove_course(self.course_remove2)
+        # self.schedule1 should not contain course2, but it should still contain course1.
+        legitTrue = self.course_remove1 in self.schedule_remove1.courses.all()
+        legitFalse = self.course_remove2 in self.schedule_remove1.courses.all()
         self.assertTrue(legitTrue)
         self.assertFalse(legitFalse)
-        
+        self.schedule_remove1.courses.clear()
+
+    def test_remove_course_coreq(self):
         """
-        Testing the removal of the corequisite course
+        course_remove1 depends on course_remove2, so removing 1 should remove 2.
         """
-        self.schedule1.courses.add(self.course2)
-        self.schedule1.remove_course(self.course1)
-        """
-        self.schedule1 should not contain course1.
-        """
-        legitFalse = course1 in self.schedule1.courses.all()
-        self.assertFalse(legitFalse)
-        """
-        self.schedule1 should not contain course2.
-        """
-        legitFalse = course2 in self.schedule1.courses.all()
-        self.assertFalse(legitFalse)
-        
-    
-        
-    
-        
-        
-    
+        self.schedule_remove1.courses.add(self.course_remove1)
+        self.schedule_remove1.courses.add(self.course_remove2)
+        # Testing the removal of the corequisite course
+        self.schedule_remove1.remove_course(self.course_remove1)
+        # self.schedule1 should not contain course1.
+        legitFalse1 = self.course_remove1 in self.schedule_remove1.courses.all()
+        # self.schedule1 should not contain course2.
+        legitFalse2 = self.course_remove2 in self.schedule_remove1.courses.all()
+        self.assertFalse(legitFalse1)
+        self.assertFalse(legitFalse2)
+        self.schedule_remove1.courses.clear()
