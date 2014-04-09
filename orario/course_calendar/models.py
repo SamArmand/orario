@@ -38,6 +38,8 @@ class Section(models.Model):
     """
     #: The course this section belongs to.
     course = models.ForeignKey(Course)
+    #: The term the section belongs to.
+    term = models.IntegerField()
     #: The lecture in this section.
     lecture = models.ForeignKey(LectureSlot)
     #: The tutorial in this section. Optional.
@@ -104,6 +106,8 @@ class Program(models.Model):
     #: Name of the program.
     name = models.CharField(max_length=255)
 
+    def __unicode__(self):
+        return self.name
 
 class Option(models.Model):
     """
@@ -115,3 +119,6 @@ class Option(models.Model):
     program = models.ForeignKey(Program)
     #: The courses listed in suggested order of completion.
     sequence = SortedManyToManyField(Course)
+
+    def __unicode__(self):
+        return self.name

@@ -1,0 +1,130 @@
+{% extends 'master.html' %}
+
+{% block title %}Add Event{% endblock %}
+
+{% block subheader %}Add Event{% endblock %}
+
+{% block content %}
+<div class="container">
+  <p class="lead">Enter a time that you'd rather not be in class.</p>
+  <form id="busy_form" class="row" role="form" method="post" action="{% url 'busyslot' schedule.pk %}">
+    {% csrf_token %}
+    <div class="col-md-6">
+      <div class="form-group {% if form.label.errors %}has-error{% endif %}">
+        {% if form.label.errors %}
+        <ul class='alert alert-danger'>{{ form.label.errors }}</ul>
+        {% endif %}
+        <label for="{{ form.label.html_name }}">Label</label>
+        <input id='{{ form.label.auto_id }}' name='{{ form.label.html_name }}' {% if form.label.value %}value='{{ form.label.value }}'{% endif %} type="text" class='form-control' placeholder="Walk the doge">
+      </div>
+      <div class="row">
+        <div class="col-md-6 form-group {% if form.begin_time.errors %}has-error{% endif %}">
+          {% if form.begin_time.errors %}
+          <ul class='alert alert-danger'>{{ form.begin_time.errors }}</ul>
+          {% endif %}
+          <label for="{{ form.begin_time.html_name }}">Start time</label>
+          <input id='{{ form.begin_time.auto_id }}' name='{{ form.begin_time.html_name }}' value='{{ form.begin_time.value }}' type="time" class='form-control' placeholder="8:00">
+        </div>
+        <div class="col-md-6 form-group {% if form.end_time.errors %}has-error{% endif %}">
+          {% if form.end_time.errors %}
+          <ul class='alert alert-danger'>{{ form.end_time.errors }}</ul>
+          {% endif %}
+          <label for="{{ form.end_time.html_name }}">End time</label>
+          <input id='{{ form.end_time.auto_id }}' name='{{ form.end_time.html_name }}' value='{{ form.end_time.value }}' type="time" class='form-control' placeholder="10:00">
+        </div>
+      </div>
+
+      {% if form.days.errors %}
+      <ul class='alert alert-danger'>{{ form.days.errors }}</ul>
+      {% endif %}
+      <input type="hidden" id="{{ form.days.auto_id }}" name="{{ form.days.html_name }}" value="{{ form.days.value }}">
+      <fieldset>
+        <legend class="select-legend">Days of the week</legend>
+        <div class="input-group input-group-lg" id="days">
+          <div class="checkbox">
+            <label>
+              <input id="monday" type="checkbox" value="1">
+              Monday
+            </label>
+          </div>
+          <div class="checkbox">
+            <label>
+              <input id="tuesday" type="checkbox" value="2">
+              Tuesday
+            </label>
+          </div>
+          <div class="checkbox">
+            <label>
+              <input id="wednesday" type="checkbox" value="4">
+              Wednesday
+            </label>
+          </div>
+          <div class="checkbox">
+            <label>
+              <input id="thursday" type="checkbox" value="8">
+              Thursday
+            </label>
+          </div>
+          <div class="checkbox">
+            <label>
+              <input id="friday" type="checkbox" value="16">
+              Friday
+            </label>
+          </div>
+          <div class="checkbox">
+            <label>
+              <input id="saturday" type="checkbox" value="32">
+              Saturday
+            </label>
+          </div>
+          <div class="checkbox">
+            <label>
+              <input id="sunday" type="checkbox" value="64">
+              Sunday
+            </label>
+          </div>
+        </div>
+      </fieldset>
+      <button class="btn btn-success btn-lg btn-block" type="submit">
+        Add Event <span class="glyphicon glyphicon-plus-sign"></span>
+      </button>
+    </div>
+  </form>
+</div>
+<script>
+  var MONDAY = 1, TUESDAY = 2, WEDNESDAY = 4, THURSDAY = 8, FRIDAY = 16, SATURDAY = 32, SUNDAY = 64;
+
+  var daysInput = document.getElementById("{{ form.days.auto_id }}");
+  var bDays = daysInput.getAttribute("value");
+  var mBox = document.getElementById("monday");
+  var tBox = document.getElementById("tuesday");
+  var wBox = document.getElementById("wednesday");
+  var jBox = document.getElementById("thursday");
+  var fBox = document.getElementById("friday");
+  var sBox = document.getElementById("saturday");
+  var dBox = document.getElementById("sunday");
+
+  mBox.checked = !!(bDays & MONDAY);
+  tBox.checked = !!(bDays & TUESDAY);
+  wBox.checked = !!(bDays & WEDNESDAY);
+  jBox.checked = !!(bDays & THURSDAY);
+  fBox.checked = !!(bDays & FRIDAY);
+  sBox.checked = !!(bDays & SATURDAY);
+  dBox.checked = !!(bDays & SUNDAY);
+
+  var busyForm = document.getElementById("busy_form");
+  busyForm.onsubmit = function() {
+    var bDays = 0;
+    bDays |= mBox.checked ? MONDAY : 0;
+    bDays |= tBox.checked ? TUESDAY : 0;
+    bDays |= wBox.checked ? WEDNESDAY : 0;
+    bDays |= jBox.checked ? THURSDAY : 0;
+    bDays |= fBox.checked ? FRIDAY : 0;
+    bDays |= sBox.checked ? SATURDAY : 0;
+    bDays |= dBox.checked ? SUNDAY : 0;
+
+    daysInput.setAttribute("value", bDays);
+    return true;
+  };
+</script>
+{% endblock %}

@@ -1,0 +1,512 @@
+/*Fuck bootstrap*/
+* {
+    font-family: 'Open Sans', sans-serif !important;
+}
+
+.glyphicon {
+    font-family: 'Glyphicons Halflings' !important;
+}
+
+.btn-lg .glyphicon {
+    padding: 0 5px;
+}
+
+.alert-error {
+    color: #a94442;
+    background-color: #f2dede;
+    border-color: #ebccd1;
+}
+
+body {
+    padding-bottom: 20px;
+}
+
+body > div > form > div:nth-child(3) > div {
+    width: 100%;
+}
+body > div > form > div:nth-child(3) > div > div {
+    width: 100%;
+    padding-bottom: 25px;
+}
+body > div > form > div:nth-child(3) > div > div > span > button {
+    width: 100%;
+}
+
+.select-legend {
+    display: inline-block;
+    width: auto;
+    margin-bottom: 0;
+    font-size: inherit;
+    border-bottom: 0;
+    font-weight: bold;
+}
+
+li.list-group-item .glyphicon {
+    color: black;
+}
+
+li.list-group-item:hover .glyphicon {
+    color: white;
+}
+
+/* Fuck Chosen */
+
+select.form-control + .chosen-container.chosen-container-single .chosen-single {
+    display: block;
+    width: 100%;
+    height: 34px;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.428571429;
+    color: #555;
+    vertical-align: middle;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,0.075);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,0.075);
+    -webkit-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+    transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+    background-image:none;
+}
+
+select.form-control + .chosen-container.chosen-container-single .chosen-single div {
+    top:4px;
+    color:#000;
+}
+
+select.form-control + .chosen-container .chosen-drop {
+    background-color: #FFF;
+    border: 1px solid #CCC;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius: 4px;
+    -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+    background-clip: padding-box;
+    margin: 2px 0 0;
+
+}
+
+select.form-control + .chosen-container .chosen-search input[type=text] {
+    display: block;
+    width: 100%;
+    height: 34px;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.428571429;
+    color: #555;
+    vertical-align: middle;
+    background-color: #FFF;
+    border: 1px solid #CCC;
+    border-radius: 4px;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+    -webkit-transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+    transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+    background-image:none;
+}
+
+select.form-control + .chosen-container .chosen-results {
+    margin: 2px 0 0;
+    padding: 5px 0;
+    font-size: 14px;
+    list-style: none;
+    background-color: #fff;
+    margin-bottom: 5px;
+}
+
+select.form-control + .chosen-container .chosen-results li ,
+select.form-control + .chosen-container .chosen-results li.active-result {
+    display: block;
+    padding: 3px 20px;
+    clear: both;
+    font-weight: normal;
+    line-height: 1.428571429;
+    color: #333;
+    white-space: nowrap;
+    background-image:none;
+}
+select.form-control + .chosen-container .chosen-results li:hover,
+select.form-control + .chosen-container .chosen-results li.active-result:hover,
+select.form-control + .chosen-container .chosen-results li.highlighted
+{
+    color: #FFF;
+    text-decoration: none;
+    background-color: #428BCA;
+    background-image:none;
+}
+
+select.form-control + .chosen-container-multi .chosen-choices {
+    display: block;
+    width: 100%;
+    min-height: 34px;
+    padding: 6px;
+    font-size: 14px;
+    line-height: 1.428571429;
+    color: #555;
+    vertical-align: middle;
+    background-color: #FFF;
+    border: 1px solid #CCC;
+    border-radius: 4px;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+    -webkit-transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+    transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+    background-image:none;
+}
+
+select.form-control + .chosen-container-multi .chosen-choices li.search-field input[type="text"] {
+    height:auto;
+    padding:5px 0;
+}
+
+select.form-control + .chosen-container-multi .chosen-choices li.search-choice {
+
+    background-image: none;
+    padding: 3px 24px 3px 5px;
+    margin: 0 6px 0 0;
+    font-size: 14px;
+    font-weight: normal;
+    line-height: 1.428571429;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    cursor: pointer;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    color: #333;
+    background-color: #FFF;
+    border-color: #CCC;
+}
+
+select.form-control + .chosen-container-multi .chosen-choices li.search-choice .search-choice-close {
+    top:8px;
+    right:6px;
+}
+
+select.form-control + .chosen-container-multi.chosen-container-active .chosen-choices,
+select.form-control + .chosen-container.chosen-container-single.chosen-container-active .chosen-single,
+select.form-control + .chosen-container .chosen-search input[type=text]:focus{
+    border-color: #66AFE9;
+    outline: 0;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075),0 0 8px rgba(102, 175, 233, 0.6);
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075),0 0 8px rgba(102, 175, 233, 0.6);
+}
+
+select.form-control + .chosen-container-multi .chosen-results li.result-selected{
+    display: list-item;
+    color: #ccc;
+    cursor: default;
+    background-color: white;
+}
+
+/*End of Bootstrap Hate (for now)*/
+
+.courses-taken{
+  height:400px;
+  overflow-y: scroll;
+}
+
+
+a {
+  color:cornflowerblue;
+}
+.logo {
+  background: url('O-Logo-corn.png');
+  width:200px;
+/*  width:33px;*/
+  height:70px;
+  display:block;
+  margin-left:-5px;
+  border-radius: 2px;
+/*  transition: background-color linear 0.3s;*/
+  transition: width ease 0.3s;
+
+}
+
+.logo:hover {
+/*  width:200px;*/
+  background: url('O-Logo-wht.png');
+  background-color:cornflowerblue;
+/*  box-shadow: 10px 3px 5px;*/
+  transition: background-color linear 0.1s;
+/*  transition: width ease 1s,background-color ease 1.2s;*/
+}
+
+.list-group-item:hover, .select:hover,.active {
+  background-color:cornflowerblue;
+  color:white;
+}
+
+a:hover {
+  text-decoration: none;
+}
+.select {
+  padding: 20px;
+}
+
+h2.select-schedule {
+  color:cornflowerblue;
+}
+
+h2.select-schedule span a {
+  font-size:20px;
+  padding:4px;
+/*  display:none;*/
+  background-color: cornflowerblue;
+  color:white;
+}
+
+h2.select-schedule span a {
+  font-weight: bold;
+  color:white;
+  padding:4px;
+}
+
+h2.select-schedule span a:hover {
+  color:cornflowerblue;
+  background:white;
+}
+
+
+.corn {
+  background-color: cornflowerblue !important;
+  color:white !important;
+}
+
+.danger {
+  background-color:red;
+}
+.well {
+  top:30px;
+  position:absolute;
+  padding:2px;
+  width:100%;
+}
+
+.morning {
+  top:30px;
+}
+
+.mid-morn {
+  top:180px;
+}
+
+.afternoon {
+  top:470px;
+}
+
+
+/*.schedule{
+  color:cornflowerblue;
+}*/
+
+.well.lec {
+  background-color: cornflowerblue;
+  color:white;
+}
+
+.well.tutorial {
+  background-color: limegreen;
+  color:white;
+}
+
+.well.lab {
+  background-color: #FF5B00;
+  color:white;
+}
+
+.well.prelab {
+  top:330px;
+}
+
+.well.dayoff {
+  top:30px;
+  height:550px
+}
+
+#schedule {
+  height:1260px;
+  background-color: #FFF;
+  padding:0;
+/*  width:1140px;*/
+}
+
+.time-col {
+  position:absolute;
+  width:80%;
+  float: left;
+  top:120px;
+/*  border:1px solid black;*/
+}
+
+.fifteen {
+  position:relative;
+  text-align: left;
+  border-top: 1px dotted #D0CFCF;
+/*  border-bottom: 1px solid black;*/
+  width:100%;
+  height:20px;
+  background-color: #F2F2F2;
+}
+
+
+.fifteen:nth-child(4n-3) {
+  border-top:1px solid #ADACAC;
+}
+.fifteen:hover {
+  background-color:#DDD;
+  border-top: 1px solid #8B8989;
+  font-weight:bold;
+}
+
+.day,.d {
+  position:relative;
+  width: 10%;
+/*  border: black solid 1px;*/
+  float:left;
+  text-align: center;
+  margin:0 1px 0 1px;
+
+}
+
+.d {
+  font-size: 0.6em;
+}
+
+.big-d-col {
+  z-index:1;
+  border:2px solid black;
+  border-radius:3px;
+  color:white;
+  font-weight:bold;
+}
+
+.small-d-col {
+  overflow: hidden;
+  position:absolute;
+  z-index:1;
+  padding:0;
+  text-align:center;
+  border:1px solid black;
+  border-radius:3px;
+  color:white;
+  font-weight:bold;
+}
+
+@media (max-width: 750px) {
+  .day {
+    display:none;
+  }
+  .logo {
+    background: none;
+    height:40px;
+  }
+  .logo:before {
+    font-size:22px;
+    color:cornflowerblue;
+    content:'Orario';
+  }
+  .logo:hover {
+    box-shadow: none;
+    background:none;
+    transition:none;
+    color:black;
+    content:"Orario";
+
+  }
+  .fifteen {
+    height:10px;
+    font-size:0.5em;
+  }
+}
+@media (min-width: 650px) {
+  .d {
+    display: none;
+  }
+}
+
+.day:nth-child(1) {
+  margin-left:100px;
+}
+#monday-d {
+  margin-left:40px;
+}
+.day div {
+  position:absolute;
+  width:100%;
+
+}
+.day > h4 {
+  font-size: 1em;
+  display:block;
+  position:relative;
+  text-align: center;
+  padding-bottom:2px;
+  border-bottom:solid 2px black;
+}
+
+.slotarray {
+  padding-top:0px;
+  background-color:#000;
+}
+
+.slot {
+/*  background-color:#FA6;*/
+/*  border-bottom:2px solid black;*/
+  border-top: 2px solid black;
+  margin-top:1px;
+  margin-bottom:1px;
+
+}
+.slot:nth-child(1) {
+
+}
+
+.seventyfive-min {
+  position:absolute;
+  width:100%;
+  border:blue 2px solid;
+  background-color: cornflowerblue;
+}
+
+.onehundred-min {
+  position:relative;
+  border:red 2px solid;
+  background-color:#FD3;
+}
+
+.onesixfive-min {
+  position:relative;
+  border:purple 2px solid;
+  background-color:#A7D;
+}
+.ninety-min *{
+  color:white;
+}
+
+.slot1 {
+  background-color: #00ACE9;
+}
+.slot2 {
+  background-color: #D43F3F;
+}
+.slot3 {
+  background-color: #6A9A1F;
+}
+.slot4 {
+  background-color: #F6F6E8;
+}
+.slot5 {
+  background-color: #99CD4E;
+}
+.slot6 {
+  background-color: #EB593C;
+}
+
+tut {
+  opacity:0.5;
+}
+lab {
+  opacity:0.25;
+}

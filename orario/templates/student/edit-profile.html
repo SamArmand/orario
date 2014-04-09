@@ -1,0 +1,60 @@
+{% extends 'main.html' %}
+
+{% block title %}Edit Profile{% endblock %}
+
+{% block subheader %}Edit your profile{% endblock %}
+
+{% block content %}
+<div class="container">
+  <form class='row' role="form" method="post" action=".">
+    {% csrf_token %}
+    <div class="col-md-6">
+      <h4>User Info</h4>
+      <div class="form-group">
+        <label for="username">Username</label>
+        <input type="text" class='form-control' value='{{ user.username }}' disabled>
+      </div>
+      <div class="form-group {% if form.password0.errors %}has-error{% endif %}">
+        <p class='error'>{{ form.password0.errors }}</p>
+        <label for="{{ form.password0.html_name }}">New password</label>
+        <input id='{{ form.password0.auto_id }}' name='{{ form.password0.html_name }}' type="password" class='form-control' placeholder="Such Password">
+      </div>
+      <div class="form-group {% if form.password0.errors %}has-error{% endif %}">
+        <p class='error'>{{ form.password1.errors }}</p>
+        <label for="{{ form.password1.html_name }}">Confirm new password</label>
+        <input id='{{ form.password1.auto_id }}' name='{{ form.password1.html_name }}' type="password" class='form-control' placeholder="Such Password">
+      </div>
+      <hr>
+      <h4>Program Info</h4>
+      <div class="form-group">
+        <label for="program">Program</label>
+        <select class="form-control" id="{{ form.program.auto_id }}" name="{{ form.program.html_name }}">
+          {% for value, text in form.program.field.choices %}
+          {% ifequal form.program.value value %}
+          <option value="{{ value }}" selected>{{ text }}</option>
+          {% else %}
+          <option value="{{ value }}">{{ text }}</option>
+          {% endifequal %}
+          {% endfor %}
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="option">Option</label>
+        <select class="form-control" id="{{ form.option.auto_id }}" name="{{ form.option.html_name }}">
+          {% for value, text in form.option.field.choices %}
+          {% ifequal form.option.value value %}
+          <option value="{{ value }}" selected>{{ text }}</option>
+          {% else %}
+          <option value="{{ value }}">{{ text }}</option>
+          {% endifequal %}
+          {% endfor %}
+        </select>
+      </div>
+      <hr>
+      <button class="btn btn-success btn-block pull-right" type="submit">
+        Save all settings <span class="glyphicon glyphicon-ok-sign"></span>
+      </button>
+    </div>
+  </form>
+</div>
+{% endblock %}

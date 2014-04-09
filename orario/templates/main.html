@@ -1,0 +1,24 @@
+{% extends 'master.html' %}
+
+{% block title %}Main Menu{% endblock %}
+
+{% block subheader %}Welcome. {{ request.user.username }}.{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+<a href="modprefs.html"><h2 class='select'><span class="glyphicon glyphicon-user"></span> Modify Account</h2></a>
+  <h2 class='select select-schedule'>
+    <span class="glyphicon glyphicon-cog"></span>Modify Schedule
+    <span><a href="addCourse.html">Fall</a></span>
+    <span><a href="AddCourseempty.html">Winter</a></span>
+    <span><a href="http://dogr.io">Summer</a></span>
+  </h2>
+  <h2 class='select select-schedule'>
+    <span class="glyphicon glyphicon-calendar"></span>View Schedule
+    <span><a href="schedule3.html">Fall </a></span>
+    <span><a href="schedule4.html">Winter</a></span>
+    <span><a href="http://dogr.io">Summer</a></span>
+  </h2>
+  <h2 class="select select-schedule"><span class="glyphicon glyphicon glyphicon-send"></span>Generate Schedule</h2>
+</div>
+{% endblock %}

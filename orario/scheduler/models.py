@@ -75,8 +75,8 @@ class BusySlot(TimeSlot):
     A specialized class representing periods of time that a user prefers not
     to allot to school.
     """
-    #: The student the BusySlot belongs to.
-    student = models.ForeignKey(settings.AUTH_USER_MODEL)
+    #: The schedule the BusySlot belongs to.
+    schedule = models.ForeignKey('Schedule')
 
 
 class SectionSlot(TimeSlot):
@@ -154,9 +154,9 @@ class Schedule(models.Model):
     #: The term number as per Concordia University's conventions.
     term = models.IntegerField()
     #: Auto-generated schedule must contain these courses.
-    courses = models.ManyToManyField('course_calendar.Course')
+    courses = models.ManyToManyField('course_calendar.Course', blank=True)
     #: Auto-generated schedule must contain these sections.
-    sections = models.ManyToManyField('course_calendar.Section')
+    sections = models.ManyToManyField('course_calendar.Section', blank=True)
 
     def add_course(self, course):
         """
@@ -170,13 +170,14 @@ class Schedule(models.Model):
         # Debug print statements
         # print [prereq in self.student.courses_taken.all() for prereq in course.prereqs.all()]
         # print [coreq in self.courses.all() for coreq in course.coreqs.all()]
-        if (
+        if (course in self.courses.all()):
+            return True
+        elif (
             all(prereq in self.student.courses_taken.all()
                 for prereq in course.prereqs.all())
             and
             all(coreq in itertools.chain(self.courses.all(), self.student.courses_taken.all())
                 for coreq in course.coreqs.all())
-            and not course in self.courses.all()
         ):
             self.courses.add(course)
             return True
@@ -195,7 +196,7 @@ class Schedule(models.Model):
         # TODO conflict checking
         from course_calendar.models import Section
         assert isinstance(section, Section)
-        if self.add_course(section.course):
+        if self.add_course(section.course) and section.term == self.term:
             self.sections.add(section)
             return True
         else:
@@ -213,17 +214,15 @@ class Schedule(models.Model):
         """
         # TODO zis, noooo
         # Most nasty schedule generating thing evar.
-        freljords = []
+        courses = [section.course for section in self.sections.all()]
         for course in self.courses.all():  # go through courses
-            if course in [section.course for section in self.sections]:
+            if course in courses:
                 pass
             else:
-                sections = course.section_set.all()
-                section_count = len(sections)
+                sections = course.section_set.filter(term=self.term)
                 for section in sections:  # try each section in course
-                    section_count -= 1
+                    print repr(section)
                     if self.add_section(section):  # returns true if success
                         break
-                if section_count == 0:
-                    freljords.append(course)
+        freljords = self.courses.exclude(pk__in=[section.course.pk for section in self.sections.all()]).all()
         return freljords

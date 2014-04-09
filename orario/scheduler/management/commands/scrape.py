@@ -119,6 +119,7 @@ class Command(BaseCommand):
             section.tutorial = None
             section.lab = None
             section.lecture = lect
+            section.term = int(sect_dict['term'])
             section.save()
         elif sect_dict['type'] == 'Tut':
             # If the current Section has no Tutorial nor Lab, then
