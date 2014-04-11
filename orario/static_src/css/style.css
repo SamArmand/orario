@@ -213,7 +213,7 @@ a {
 }
 .logo {
   background: url('O-Logo-corn.png');
-  width:200px;
+  width:210px;
 /*  width:33px;*/
   height:70px;
   display:block;
@@ -330,6 +330,15 @@ h2.select-schedule span a:hover {
   background-color: #FFF;
   padding:0;
 /*  width:1140px;*/
+}
+
+#schedule h4 {
+  font-size: 12px;
+}
+
+#schedule p {
+  line-height: 0.618em;
+  font-size: 12px;
 }
 
 .time-col {

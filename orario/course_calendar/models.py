@@ -121,4 +121,8 @@ class Option(models.Model):
     sequence = SortedManyToManyField(Course)
 
     def __unicode__(self):
-        return self.name
+        return "%s - %s" % (self.program.name, self.name)
+
+    def get_next_courses(self, student):
+        print repr(student.courses_taken.all())
+        return self.sequence.exclude(pk__in=[course.pk for course in student.courses_taken.all()])

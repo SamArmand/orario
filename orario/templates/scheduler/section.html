@@ -1,20 +1,20 @@
 {% extends 'master.html' %}
 
-{% block title %}Add Course{% endblock %}
+{% block title %}Add Section{% endblock %}
 
-{% block subheader %}Add Course{% endblock %}
+{% block subheader %}Add Section{% endblock %}
 
 {% block content %}
 <div class="container">
-  <p class="lead">Choose a course</p>
-  <form id="busy_form" class="row" role="form" method="post" action="{% url 'course' schedule.pk %}">
+  <p class="lead">Choose a section</p>
+  <form id="busy_form" class="row" role="form" method="post" action="{% url 'section' schedule.pk %}">
     {% csrf_token %}
     <div class="col-md-6">
       <div class="form-group">
-        <label for="{{ form.course.auto_id }}">Course</label>
-        <select class="form-control" id="{{ form.course.auto_id }}" name="{{ form.course.html_name }}">
-          {% for value, text in form.course.field.choices %}
-          {% ifequal form.course.value value %}
+        <label for="{{ form.section.auto_id }}">Section</label>
+        <select class="form-control" id="{{ form.section.auto_id }}" name="{{ form.section.html_name }}">
+          {% for value, text in form.section.field.choices %}
+          {% ifequal form.section.value value %}
           <option value="{{ value }}" selected>{{ text }}</option>
           {% else %}
           <option value="{{ value }}">{{ text }}</option>
@@ -33,7 +33,7 @@
 {% block js %}
 <script>
 $(document).ready(function(){
-  $("#{{ form.course.auto_id }}").chosen();
+  $("#{{ form.section.auto_id }}").chosen();
 });
 </script>
 {% endblock %}

@@ -1,0 +1,30 @@
+{% extends 'master.html' %}
+
+{% block title %}Login{% endblock %}
+
+{% block subheader %}Login{% endblock %}
+
+{% block content %}
+<div class="container">
+  <div class='row'>
+    <form role="form" method="post" action="{% url 'login' %}" class="col-md-6">
+      {% csrf_token %}
+      <div class="form-group {% if form.username.errors %}has-error{% endif %}">
+        <p class='error'>{{ form.username.errors }}</p>
+        <label for="{{ form.username.auto_id }}">Username</label>
+        <input id='{{ form.username.auto_id }}' name='{{ form.username.html_name }}' type="text" class='form-control' placeholder="robotunicorn">
+      </div>
+      <div class="form-group {% if form.password.errors %}has-error{% endif %}">
+        <p class='error'>{{ form.password.errors }}</p>
+        <label for="{{ form.password.auto_id }}">Password</label>
+        <input id='{{ form.password.auto_id }}' name='{{ form.password.html_name }}' type="password" class='form-control' placeholder="Password">
+      </div>
+      <hr>
+      <hr>
+      <button class="btn btn-success btn-block pull-right" type="submit">
+        Login <span class="glyphicon glyphicon-ok-sign"></span>
+      </button>
+    </form>
+  </div>
+</div>
+{% endblock %}

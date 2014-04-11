@@ -196,11 +196,15 @@ class Schedule(models.Model):
         # TODO conflict checking
         from course_calendar.models import Section
         assert isinstance(section, Section)
-        if self.add_course(section.course) and section.term == self.term:
+        if (
+            self.add_course(section.course) and
+            section.term == self.term and
+            all([not section.conflicts_with(sec) for sec in self.sections.all()]) and
+            all([not section.conflicts_with(busy) for busy in self.busyslot_set.all()])
+        ):
             self.sections.add(section)
             return True
-        else:
-            return False
+        return False
 
     def remove_section(self, section):
         from course_calendar.models import Section
@@ -219,9 +223,8 @@ class Schedule(models.Model):
             if course in courses:
                 pass
             else:
-                sections = course.section_set.filter(term=self.term)
+                sections = course.section_set.filter(term=self.term).order_by('?')
                 for section in sections:  # try each section in course
-                    print repr(section)
                     if self.add_section(section):  # returns true if success
                         break
         freljords = self.courses.exclude(pk__in=[section.course.pk for section in self.sections.all()]).all()

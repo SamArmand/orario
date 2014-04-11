@@ -1,0 +1,64 @@
+{% extends 'master.html' %}
+{% load staticfiles %}
+
+{% block title %}View Schedule{% endblock %}
+
+{% block subheader %}View Schedule{% endblock %}
+
+{% block content %}
+<div id='schedule' class="container">
+  <div class="container">
+    <!--Big Monday-->
+    <div class="day">
+      <h4>Monday</h4>
+
+      <!--End of Big Monday-->
+
+      <!--Mini Monday-->
+    </div>
+    <div id='monday-d' class="d">
+      <h4>M</h4>
+
+
+    </div>
+    <!--    End of Mini Monday      -->
+    <div class="day">
+      <h4>Tuesday</h4>
+
+    </div>
+    <div class="d">
+      <h4>T</h4>
+      <div class="container small-d-col slot2 lec" style='top:39px;height:100px'>Mini Tuesday class 2</div>
+    </div>
+    <div class="day">
+      <h4>Wednesday</h4>
+
+    </div>
+    <div class="d">
+      <h4>W</h4>
+      <div class="container small-d-col slot2 lec" style='top:38px;height:70px'>Mini Wed class 2</div>
+      <div class="container small-d-col slot3 tut" style='top:279px;height:50px'>Mini Wedn class 3</div>
+    </div>
+    <div class="day">
+      <h4>Thursday</h4>
+
+    </div><div class="d"><h4>Th</h4></div>
+    <div class="day"><h4>Friday</h4></div><div class="d"><h4>F</h4></div>
+    <div class="day"><h4>Saturday</h4></div><div class="d"><h4>Sa</h4></div>
+    <div class="day"><h4>Sunday</h4></div><div class="d"><h4>Su</h4></div>
+  </div>
+  <div class="container timecol" id="timeslots">
+    <div class='fifteen'>08:00</div><div class='fifteen'>08:15</div><div class='fifteen'>08:30</div><div class='fifteen'>08:45</div><div class='fifteen'>09:00</div><div class='fifteen'>09:15</div><div class='fifteen'>09:30</div><div class='fifteen'>09:45</div><div class='fifteen'>10:00</div><div class='fifteen'>10:15</div><div class='fifteen'>10:30</div><div class='fifteen'>10:45</div><div class='fifteen'>11:00</div><div class='fifteen'>11:15</div><div class='fifteen'>11:30</div><div class='fifteen'>11:45</div><div class='fifteen'>12:00</div><div class='fifteen'>12:15</div><div class='fifteen'>12:30</div><div class='fifteen'>12:45</div><div class='fifteen'>13:00</div><div class='fifteen'>13:15</div><div class='fifteen'>13:30</div><div class='fifteen'>13:45</div><div class='fifteen'>14:00</div><div class='fifteen'>14:15</div><div class='fifteen'>14:30</div><div class='fifteen'>14:45</div><div class='fifteen'>15:00</div><div class='fifteen'>15:15</div><div class='fifteen'>15:30</div><div class='fifteen'>15:45</div><div class='fifteen'>16:00</div><div class='fifteen'>16:15</div><div class='fifteen'>16:30</div><div class='fifteen'>16:45</div><div class='fifteen'>17:00</div><div class='fifteen'>17:15</div><div class='fifteen'>17:30</div><div class='fifteen'>17:45</div><div class='fifteen'>18:00</div><div class='fifteen'>18:15</div><div class='fifteen'>18:30</div><div class='fifteen'>18:45</div><div class='fifteen'>19:00</div><div class='fifteen'>19:15</div><div class='fifteen'>19:30</div><div class='fifteen'>19:45</div><div class='fifteen'>20:00</div><div class='fifteen'>20:15</div><div class='fifteen'>20:30</div><div class='fifteen'>20:45</div><div class='fifteen'>21:00</div><div class='fifteen'>21:15</div><div class='fifteen'>21:30</div><div class='fifteen'>21:45</div><div class='fifteen'>22:00</div><div class='fifteen'>22:15</div><div class='fifteen'>22:30</div><div class='fifteen'>22:45</div><div class='fifteen'>23:00</div>
+  </div>
+</div>
+{% endblock %}
+
+{% block js %}
+<script>
+var j = {{ json|safe }};
+</script>
+<script src="{% static 'js/schedule.js' %}"></script>
+<script>
+main();
+</script>
+{% endblock %}

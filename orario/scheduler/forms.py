@@ -20,6 +20,6 @@ class SectionForm(forms.Form):
     section = forms.ModelChoiceField(queryset=Section.objects.all())
 
     def __init__(self, *args, **kwargs):
-        course = kwargs.pop('course')
+        sections = kwargs.pop('sections')
         super(SectionForm, self).__init__(*args, **kwargs)
-        self.fields['section'].queryset = Section.objects.filter(course=course)
+        self.fields['section'].queryset = sections

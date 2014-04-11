@@ -1,13 +1,13 @@
 {% extends 'master.html' %}
 
-{% block title %}Add Course{% endblock %}
+{% block title %}Add Course to Record{% endblock %}
 
-{% block subheader %}Add Course{% endblock %}
+{% block subheader %}Add Course to Your Record{% endblock %}
 
 {% block content %}
 <div class="container">
   <p class="lead">Choose a course</p>
-  <form id="busy_form" class="row" role="form" method="post" action="{% url 'course' schedule.pk %}">
+  <form id="busy_form" class="row" role="form" method="post" action="{% url 'course-add-to-record' %}">
     {% csrf_token %}
     <div class="col-md-6">
       <div class="form-group">

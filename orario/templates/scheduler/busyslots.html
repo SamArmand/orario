@@ -18,7 +18,7 @@
         {% for course in courses %}
         <li class="list-group-item">
           <strong>{{ course }}</strong>
-          <a href="something"><span class="glyphicon glyphicon-remove pull-right"></span></a>
+          <a href="{% url 'course-delete' schedule.pk course.pk %}"><span class="glyphicon glyphicon-remove pull-right"></span></a>
         </li>
         {% endfor %}
       </ul>
@@ -37,7 +37,7 @@
         {% for section in sections %}
         <li class="list-group-item">
           <strong>{{ section }}</strong>
-          <a href="something"><span class="glyphicon glyphicon-remove pull-right"></span></a>
+          <a href="{% url 'section-delete' schedule.pk section.pk %}"><span class="glyphicon glyphicon-remove pull-right"></span></a>
         </li>
         {% endfor %}
       </ul>
@@ -65,7 +65,14 @@
       {% endif %}
       {% endwith %}
       <hr>
-      <a class="btn btn-success btn-block btn-lg" href="{% url 'generate' schedule.pk %}">Generate Schedule <span class="glyphicon glyphicon-heart"></span></a>
+      <div class="row">
+        <div class="col-xs-6">
+          <a class="btn btn-primary btn-block btn-lg col-xs-6" href="{% url 'generate' schedule.pk %}">Generate</a>
+        </div>
+        <div class="col-xs-6">
+          <a class="btn btn-success btn-block btn-lg col-xs-6" href="{% url 'auto-generate' schedule.pk %}">Autofill and generate <span class="glyphicon glyphicon-heart"></span></a>
+        </div>
+      </div>
     </div>
   </div>
 </div>

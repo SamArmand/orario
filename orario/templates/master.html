@@ -13,11 +13,9 @@
 <body>
   <div class="container">
     <h1>
-      <a class='logo' href="MainPage.html"></a>
+      <a class='logo' href="{% url 'main' %}"></a>
       {% if user.is_authenticated %}
-      <button class='btn btn-sm btn-primary pull-right' style='position:absolute;top:20px;right:50px'>Logout</button>
-      {% else %}
-      LOGIN FORM HERE god dammit
+      <a href='{% url "logout" %}' class='btn btn-sm btn-primary pull-right' style='position:absolute;top:20px;right:50px'>Logout</a>
       {% endif %}
     </h1>
     <p class="lead text-success">{% block subheader %}{% endblock %}</p>

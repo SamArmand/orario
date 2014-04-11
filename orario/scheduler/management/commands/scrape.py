@@ -4,9 +4,12 @@ import datetime
 
 from bs4 import BeautifulSoup
 from django.core.management.base import BaseCommand
+from django.core.exceptions import ObjectDoesNotExist
 
 from course_calendar.models import *
 from scheduler.models import *
+
+from prereqs import get_prereq_dict
 
 
 class Command(BaseCommand):
@@ -27,6 +30,8 @@ class Command(BaseCommand):
 
         # Regex to match various things, thank you George for your regex skillz
         terms = re.compile(r'^[(&nbsp;)\W]*/[1-4]$')
+
+        # First pass to add courses to db
         for anchor in course_anchors:
             course = Course()
             course_number = anchor.next_sibling
@@ -41,15 +46,11 @@ class Command(BaseCommand):
             section = Section()  # Stub Section to create Section objects as we iterate through the rows.
             section.course = course
 
-            #iterate through all rows
             for row in anchor.parent.next_siblings:
                 try:
                     # Next course, so break from loop
                     if row('td', style='background-color:Maroon;'):
                         break
-                    # Row is a prereq list
-                    elif 'Prerequisite:' in row.contents[2].text:
-                        self.handle_prereqs(row)
                     # Row is a special note
                     elif 'Special Note' in row.contents[2].text:
                         self.handle_note(row)
@@ -64,22 +65,8 @@ class Command(BaseCommand):
                     self.stdout.write(e.__unicode__())
                 except AttributeError, e:
                     self.stdout.write(e.__unicode__())
-
-
-    def handle_prereqs(self, row):
-        """ Returns a dict of prereqs in the form
-            of course numbers . Format:
-
-            {
-                'prereqs': ('COMP 232', ...),
-                'coreqs': ('SOEN 331', ...),
-                'other': 'notes, etc'
-            }
-
-            @author Felicis pls
-        """
-        pass
-        # print row.contents[3].text
+                except TypeError, e:
+                    self.stdout.write(e.__unicode__())
 
 
     def handle_note(self, row):

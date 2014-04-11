@@ -1,0 +1,30 @@
+{% extends 'master.html' %}
+
+{% block title %}Main Menu{% endblock %}
+
+{% block subheader %}Welcome. {{ user.username }}.{% endblock %}
+
+{% block content %}
+<div class="container">
+  <a href="{% url 'profile' %}">
+  <h2 class='select'>
+    <span class="glyphicon glyphicon-user"></span>
+    Modify Account
+  </h2>
+  </a>
+  <h2 class='select select-schedule'>
+    <span class="glyphicon glyphicon-cog"></span>
+    Modify Schedule
+    <span><a href="{% url 'schedule' fall.pk %}">Fall</a></span>
+    <span><a href="{% url 'schedule' winter.pk %}">Winter</a></span>
+    <span><a href="{% url 'schedule' summer.pk %}">Summer</a></span>
+  </h2>
+  <h2 class='select select-schedule'>
+    <span class="glyphicon glyphicon-calendar"></span>
+    View Schedule
+    <span><a href="{% url 'schedule-view' fall.pk %}">Fall</a></span>
+    <span><a href="{% url 'schedule-view' winter.pk %}">Winter</a></span>
+    <span><a href="{% url 'schedule-view' summer.pk %}">Summer</a></span>
+  </h2>
+</div>
+{% endblock %}
