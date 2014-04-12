@@ -165,12 +165,16 @@ def auto_generate(request, schedule_id):
     if not (request.user is schedule_ob.student or request.user.is_superuser):
         raise PermissionDenied
     num_courses = 5 - schedule_ob.courses.count()
-    for course in request.user.option.get_next_courses(request.user):
-        result = schedule_ob.add_course(course)
-        if result:
-            num_courses -= 1
-        if num_courses <= 0:
-            break
+    if request.user.option:
+        for course in request.user.option.get_next_courses(request.user):
+            result = schedule_ob.add_course(course)
+            if result:
+                num_courses -= 1
+            if num_courses <= 0:
+                break
+    else:
+        messages.warning(request,
+                         "<strong>Warning!</strong> You have not selected a program option yet.")
     freljords = schedule_ob.generate()
     if freljords:
         messages.warning(request,
