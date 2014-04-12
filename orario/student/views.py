@@ -67,7 +67,7 @@ def profile(request):
         if form.is_valid():
             # Validate
             if form.cleaned_data['password0']:
-                if form.cleaned_data['password0'] != form.cleaned_data['password1']:
+                if form.cleaned_data['password0'] == form.cleaned_data['password1']:
                     request.user.set_password(form.cleaned_data['password0'])
                     messages.success(request, "<strong>Success!</strong> Password changed.")
                 else:
