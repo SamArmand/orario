@@ -69,9 +69,12 @@ def profile(request):
             if form.cleaned_data['password0']:
                 if form.cleaned_data['password0'] != form.cleaned_data['password1']:
                     request.user.set_password(form.cleaned_data['password0'])
+                    messages.success(request, "<strong>Success!</strong> Password changed.")
                 else:
                     messages.error(request, "The two passwords do not match.")
-            request.user.option = form.cleaned_data['option']
+            if request.user.option != form.cleaned_data['option']:
+                request.user.option = form.cleaned_data['option']
+                messages.success(request, "<strong>Success!</strong> Option selected.")
             request.user.save()
             return HttpResponseRedirect(reverse('profile'))
     else:
