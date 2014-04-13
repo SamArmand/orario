@@ -144,13 +144,13 @@ var slotLength = function(start,stop) {
 }
 
 
-var render = function(timeSlot,courseNumber) {
+var render = function(timeSlot,courseNumber,slotType,colour) {
 
   var begin_time = parseTime(timeSlot.begin_time);
   var begin_min = begin_time.getHours() * 60 + begin_time.getMinutes();
   var end_time = parseTime(timeSlot.end_time);
   var end_min = end_time.getHours() * 60 + end_time.getMinutes();
-  var name = '<h4>'+courseNumber+'</h4><p>'+begin_time.toTimeString().substring(0,5)+'&mdash;'+end_time.toTimeString().substring(0,5)+'</p>';
+  var name = '<h4>'+courseNumber+'</h4><p>'+begin_time.toTimeString().substring(0,5)+'&mdash;'+end_time.toTimeString().substring(0,5)+'</p>'+'<p>'+slotType+'</p>';
   if (timeSlot.room)
     name += '<p>'+timeSlot.room+'</p>';
   var height = (end_min - begin_min)/15 * 20;
@@ -166,15 +166,15 @@ var render = function(timeSlot,courseNumber) {
     var bigNode = document.createElement('div');
     var smallNode = document.createElement('div');
 
-    bigNode.setAttribute('style','top:'+offset+ 'px;'+ 'height:'+height +'px;' + 'background-color:'+'cornflowerblue;'+'color:'+'white');
+    bigNode.setAttribute('style','top:'+offset+ 'px;'+ 'height:'+height +'px;' + 'background-color:'+colour+';color:'+'white');
     bigNode.className += 'container big-d-col';
     bigNode.innerHTML = name;
-    smallNode.setAttribute('style','top:'+offset+ 'px;' + 'height:'+height/2 +'px;' + 'background-color:'+'cornflowerblue;'+'color:'+'white');
+    smallNode.setAttribute('style','top:'+offset+ 'px;' + 'height:'+height/2 +'px;' + 'background-color:'+colour+';color:'+'white');
     smallNode.className += 'container small-d-col';
     smallNode.innerHTML = name;
     DOMday.appendChild(bigNode);
     DOMd.appendChild(smallNode);
-    console.log('slot added');
+    console.log(slotType +' slot added');
     })
 };
 
@@ -187,19 +187,18 @@ var main = function(){
   j.sections.forEach(function(el,i) {
     var section = el;
     var course = section.course.number;
-    render(section.lecture,course);
+    render(section.lecture,course,'Lec','cornflowerblue');
     if (section.tutorial) {
-      render(section.tutorial,course);
+      render(section.tutorial,course,'Tut','green');
     }
     if (section.lab) {
-      render(section.lab,course);
+      render(section.lab,course,'Lab','#C33');
     }
   j.busyslots.forEach(function(el,i) {
     var slot = el;
-    render(slot, slot.label);
+    render(slot, slot.label,'','#DDD');
   })
 })
 
 
 };
-

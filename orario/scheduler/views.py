@@ -36,7 +36,7 @@ def schedule_view(request, schedule_id):
                 'busyslots': [model_to_dict(slot) for slot in schedule_ob.busyslot_set.all()]}
     return render_to_response(
         'scheduler/schedule.html',
-        {'json': json.dumps(response, cls=DjangoJSONEncoder)},
+        {'json': json.dumps(response, cls=DjangoJSONEncoder), 'schedule': schedule_ob},
         context_instance=RequestContext(request)
     )
 

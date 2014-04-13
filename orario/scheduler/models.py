@@ -42,6 +42,20 @@ class TimeSlot(models.Model):
         """
         abstract = True
 
+    def str_days(self):
+        days = ""
+        days += "M" if self.days & MONDAY else "-"
+        days += "T" if self.days & TUESDAY else "-"
+        days += "W" if self.days & WEDNESDAY else "-"
+        days += "J" if self.days & THURSDAY else "-"
+        days += "F" if self.days & FRIDAY else "-"
+        days += "S" if self.days & SATURDAY else "-"
+        days += "D" if self.days & SUNDAY else "-"
+        return days
+
+    def str_times(self):
+        return "%s - %s" % (self.begin_time.strftime('%H:%M'), self.end_time.strftime('%H:%M'))
+
     def conflicts_with(self, slot):
         """
         Returns whether this TimeSlot conflicts with the specified

@@ -1,0 +1,55 @@
+{% extends 'master.html' %}
+
+{% block title %}Search Courses{% endblock %}
+
+{% block subheader %}Search course listing{% endblock %}
+
+{% block content %}
+<div class="container">
+  <form action="{% url 'search-courses' %}" method="get" class="form-inline">
+    <div class="form-group">
+      <label class="sr-only" for="query">Search terms</label>
+      <input id="query" name="query" type="text" class="form-control" placeholder="e.g. COMP 248, system hardware, etc." {% if query %}value="{{ query }}"{% endif %}>
+    </div>
+    <button type="submit" class="btn btn-default">Search</button>
+  </form>
+  <hr>
+  {% if courses %}
+  {% for course in courses %}
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">{{ course }}</h3>
+    </div>
+    <div class="panel-body">
+      <table class="table">
+      {% for section in course.section_set.all %}
+        <tr>
+          <th colspan="3">Section {{ section.code }}</th>
+        </tr>
+        <tr>
+          <td>Lecture {{ section.lecture.section_code }}</td>
+          <td>{{ section.lecture.instructor }}</td>
+          <td>{{ section.lecture.str_days }} {{ section.lecture.str_times }}</td>
+        </tr>
+        {% if section.tutorial %}
+        <tr>
+          <td>Tutorial {{ section.tutorial.section_code }}</td>
+          <td>{{ section.tutorial.instructor }}</td>
+          <td>{{ section.tutorial.str_days }} {{ section.tutorial.str_times }}</td>
+        </tr>
+        {% endif %}
+        {% if section.lab %}
+        <tr>
+          <td>Lab {{ section.lab.section_code }}</td>
+          <td>{{ section.lab.instructor }}</td>
+          <td>{{ section.lab.str_days }} {{ section.lab.str_times }}</td>
+        </tr>
+        {% endif %}
+      {% endfor %}
+      </table>
+    </div>
+  </div>
+  {% endfor %}
+  {% endif %}
+</div>
+{% endblock %}

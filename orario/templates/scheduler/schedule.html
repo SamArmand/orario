@@ -3,7 +3,7 @@
 
 {% block title %}View Schedule{% endblock %}
 
-{% block subheader %}View Schedule{% endblock %}
+{% block subheader %}View Schedule <a class='btn btn-primary btn-md' href="{% url 'schedule' schedule.pk %}">Edit schedule</a>{% endblock %}
 
 {% block content %}
 <div id='schedule' class="container">

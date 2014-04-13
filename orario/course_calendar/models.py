@@ -53,6 +53,10 @@ class Section(models.Model):
         """
         return string.join([
             self.course.__unicode__(),
+            self.code()])
+
+    def code(self):
+        return string.join([
             self.lecture.section_code,
             self.tutorial.section_code if self.tutorial is not None else '',
             self.lab.section_code if self.lab is not None else ''])
