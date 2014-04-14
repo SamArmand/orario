@@ -33,15 +33,18 @@ class Command(BaseCommand):
 
         # First pass to add courses to db
         for anchor in course_anchors:
-            course = Course()
             course_number = anchor.next_sibling
             course_title = course_number.next_sibling
             course_credits = course_title.next_sibling
 
-            course.number = course_number.text
-            course.title = course_title.text
-            course.credits = int(re.match(r'\d+', course_credits.text).group())  # TODO make it capture decimals
-            course.save()
+            course, created = Course.objects.get_or_create(number=course_number.text)
+            if created:
+                course.title = course_title.text
+                course.credits = float(re.findall(r'(\d+(\.\d+)?)', course_credits.text)[0][0])  # TODO make it capture decimals
+                course.save()
+                self.stdout.write('Creating %s' % course)
+            else:
+                self.stdout.write('Updating %s' % course)
 
             section = Section()  # Stub Section to create Section objects as we iterate through the rows.
             section.course = course
@@ -59,8 +62,6 @@ class Command(BaseCommand):
                         self.handle_section(section, row)
                         if section.pk is None:
                             self.stdout.write('Skipped section')
-                        else :
-                            self.stdout.write(section.__unicode__())
                 except IndexError, e:
                     self.stdout.write(e.__unicode__())
                 except AttributeError, e:
